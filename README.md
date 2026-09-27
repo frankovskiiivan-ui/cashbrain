@@ -36,7 +36,7 @@ cashbrain/
 │
 ├── tests/                  # 🧪 Тесты (pytest, 33 теста)
 └── simulate.py             # Симулятор диалога без MAX
-
+```
 
 
 ## 🚀 Запуск
