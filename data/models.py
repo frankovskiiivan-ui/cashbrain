@@ -29,7 +29,7 @@ class SupportProgram(Base):
     type = Column(String)                      # "субсидия", "кредит", "грант"
     amount_min = Column(Float)                 # Мин. сумма
     amount_max = Column(Float)                 # Макс. сумма
-    interest_rate = Column(Float, nullable=True) # Ставка для кредитов
+    interest_rate = Column(String, nullable=True) # Ставка для кредитов
     conditions = Column(JSON)                  # {"region": ["Татарстан"], "industry": ["IT"], "max_revenue": 2000000}
     source_url = Column(String)                # Ссылка на первоисточник (МСП.РФ)
     updated_at = Column(DateTime, default=datetime.utcnow) # Дата актуальности
