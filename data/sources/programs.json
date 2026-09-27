@@ -1,0 +1,246 @@
+[
+  {
+    "id": 1,
+    "name": "Льготный кредит для МСП из приоритетных отраслей",
+    "type": "кредит",
+    "amount_min": 500000,
+    "amount_max": 50000000,
+    "interest_rate": "ключ + 3%",
+    "conditions": {
+      "region": ["все"],
+      "category": ["ИП", "ООО", "МСП"],
+      "industry": ["туризм", "производство", "логистика", "IT", "научно-техническая деятельность", "креативные индустрии"],
+      "max_revenue": 2000000000,
+      "goal": ["пополнение оборотных средств", "инвестиции"],
+      "requirements": ["реестр МСП", "приоритетная отрасль"]
+    },
+    "source_url": "https://economy.gov.ru/material/news/do_konca_2026_goda_msp_smogut_privlech_po_novoy_programme_bolee_150_mlrd_rubley_po_lgotnoy_stavke.html"
+  },
+  {
+    "id": 2,
+    "name": "Льготный кредит для МСП в приграничных регионах",
+    "type": "кредит",
+    "amount_min": 500000,
+    "amount_max": 30000000,
+    "interest_rate": "ключевая ставка",
+    "conditions": {
+      "region": ["Республика Крым", "Краснодарский край", "Белгородская область", "Брянская область", "Воронежская область", "Курская область", "Ростовская область", "Севастополь"],
+      "category": ["ИП", "ООО", "МСП"],
+      "industry": ["все"],
+      "goal": ["пополнение оборотных средств", "инвестиции"],
+      "requirements": ["реестр МСП", "зонтичное поручительство Корпорации МСП"]
+    },
+    "source_url": "https://economy.gov.ru/material/news/do_konca_2026_goda_msp_smogut_privlech_po_novoy_programme_bolee_150_mlrd_rubley_po_lgotnoy_stavke.html"
+  },
+  {
+    "id": 3,
+    "name": "Льготный лизинг оборудования (программа 6%)",
+    "type": "лизинг",
+    "amount_min": 0,
+    "amount_max": 7000000,
+    "interest_rate": 6.0,
+    "conditions": {
+      "region": ["все"],
+      "category": ["ИП", "ООО", "МСП"],
+      "industry": ["производство", "обрабатывающая промышленность", "легкая промышленность"],
+      "equipment": ["российское оборудование"],
+      "requirements": ["реестр МСП"]
+    },
+    "source_url": "https://xn--80aapampemcchfmo7a3c9ehj.xn--p1ai/news/lgotnye-kredity-i-subsidii-kak-v-rossii-pomogayut-razvivatsya-biznesu/"
+  },
+  {
+    "id": 4,
+    "name": "Льготный лизинг зарубежного оборудования (программа 8%)",
+    "type": "лизинг",
+    "amount_min": 0,
+    "amount_max": 7000000,
+    "interest_rate": 8.0,
+    "conditions": {
+      "region": ["все"],
+      "category": ["ИП", "ООО", "МСП"],
+      "industry": ["производство", "обрабатывающая промышленность"],
+      "equipment": ["зарубежное оборудование"],
+      "requirements": ["реестр МСП"]
+    },
+    "source_url": "https://xn--80aapampemcchfmo7a3c9ehj.xn--p1ai/news/lgotnye-kredity-i-subsidii-kak-v-rossii-pomogayut-razvivatsya-biznesu/"
+  },
+  {
+    "id": 5,
+    "name": "Грант для молодых предпринимателей (14-25 лет)",
+    "type": "грант",
+    "amount_min": 100000,
+    "amount_max": 500000,
+    "interest_rate": null,
+    "conditions": {
+      "region": ["все"],
+      "category": ["ИП", "самозанятый"],
+      "age": [14, 25],
+      "industry": ["все"],
+      "goal": ["открытие бизнеса", "расширение"],
+      "requirements": ["реестр МСП", "обучение в центре 'Мой бизнес' (не менее 16 академических часов)"]
+    },
+    "source_url": "https://achinsk.gosuslugi.ru/netcat_files/253/2411/26_731_S6680_1_0015_Ob_yavlenie_ob_otbore.pdf"
+  },
+  {
+    "id": 6,
+    "name": "Социальный контракт на открытие бизнеса",
+    "type": "субсидия",
+    "amount_min": 0,
+    "amount_max": 350000,
+    "interest_rate": null,
+    "conditions": {
+      "region": ["все"],
+      "category": ["самозанятый", "ИП"],
+      "industry": ["все"],
+      "goal": ["открытие бизнеса"],
+      "requirements": ["малоимущий статус или статус безработного", "социальный контракт с органами соцзащиты"]
+    },
+    "source_url": "https://hislav.admin-smolensk.ru/news/obyavleniya-otdela-po-ekonomike/ot-idei-do-milliona-kakie-mery-podderzhki-dostupny-predprinimatelyam-2/"
+  },
+  {
+    "id": 7,
+    "name": "Грант 'Первый старт' для начинающих предпринимателей",
+    "type": "грант",
+    "amount_min": 100000,
+    "amount_max": 500000,
+    "interest_rate": null,
+    "conditions": {
+      "region": ["все"],
+      "category": ["ИП", "ООО"],
+      "industry": ["все"],
+      "goal": ["открытие бизнеса", "расширение"],
+      "requirements": ["регистрация менее 1 года", "реестр МСП", "софинансирование 15%"]
+    },
+    "source_url": "https://hislav.admin-smolensk.ru/news/obyavleniya-otdela-po-ekonomike/ot-idei-do-milliona-kakie-mery-podderzhki-dostupny-predprinimatelyam-2/"
+  },
+  {
+    "id": 8,
+    "name": "Микрозайм для МСП (Государственные микрофинансовые организации)",
+    "type": "кредит",
+    "amount_min": 0,
+    "amount_max": 5000000,
+    "interest_rate": 8.5,
+    "conditions": {
+      "region": ["все"],
+      "category": ["ИП", "ООО", "МСП"],
+      "industry": ["все"],
+      "max_revenue": 120000000,
+      "goal": ["пополнение оборотных средств", "инвестиции", "развитие"],
+      "requirements": ["реестр МСП"]
+    },
+    "source_url": "https://xn--80aapampemcchfmo7a3c9ehj.xn--p1ai/news/lgotnye-kredity-i-subsidii-kak-v-rossii-pomogayut-razvivatsya-biznesu/"
+  },
+  {
+    "id": 9,
+    "name": "Грант 'Бизнес-Старт' (Фонд содействия инновациям)",
+    "type": "грант",
+    "amount_min": 5000000,
+    "amount_max": 18000000,
+    "interest_rate": null,
+    "conditions": {
+      "region": ["все"],
+      "category": ["ИП", "ООО", "МТК"],
+      "industry": ["IT", "научно-техническая деятельность", "инновации"],
+      "max_revenue": 300000000,
+      "goal": ["создание производства", "коммерциализация инноваций"],
+      "requirements": ["реестр МСП", "софинансирование до 30%", "наличие договора по программе 'Старт' или выручка до 300 млн"]
+    },
+    "source_url": "https://www.economy.gov.ru/material/news/predprinimateli_innovatory_poluchat_granty_na_zapusk_proizvodstva.html"
+  },
+  {
+    "id": 10,
+    "name": "Льготный кредит для МСП в моногородах и ОЭЗ",
+    "type": "кредит",
+    "amount_min": 0,
+    "amount_max": 100000000,
+    "interest_rate": 6.0,
+    "conditions": {
+      "region": ["моногорода", "особые экономические зоны"],
+      "category": ["ИП", "ООО", "МСП"],
+      "industry": ["все"],
+      "goal": ["инвестиции", "пополнение оборотных средств"],
+      "requirements": ["реестр МСП", "нахождение в моногороде или ОЭЗ"]
+    },
+    "source_url": "https://www.economy.gov.ru/material/news/maksim_reshetnikov_v_2026_godu_malyy_i_sredniy_biznes_smozhet_privlech_okolo_900_mlrd_rubley.html"
+  },
+  {
+    "id": 11,
+    "name": "Льготный кредит для МСП на воссоединенных территориях",
+    "type": "кредит",
+    "amount_min": 0,
+    "amount_max": 50000000,
+    "interest_rate": 10.25,
+    "conditions": {
+      "region": ["ДНР", "ЛНР", "Запорожская область", "Херсонская область"],
+      "category": ["ИП", "ООО", "МСП"],
+      "industry": ["все"],
+      "goal": ["пополнение оборотного капитала", "модернизация производства", "запуск новых проектов"],
+      "requirements": ["реестр МСП", "зонтичное поручительство"]
+    },
+    "source_url": "https://www.economy.gov.ru/material/news/aleksandr_novak_dlya_msp_vossoedinennyh_territoriy_vozobnovlena_vydacha_lgotnyh_kreditov_.html"
+  },
+  {
+    "id": 12,
+    "name": "Льготная программа кредитования для малых технологических компаний ('Высокотех')",
+    "type": "кредит",
+    "amount_min": 25000000,
+    "amount_max": 20000000000,
+    "interest_rate": "ключевая - 7%",
+    "conditions": {
+      "region": ["все"],
+      "category": ["ИП", "ООО", "МТК"],
+      "industry": ["IT", "научно-техническая деятельность", "инновации", "высокотехнологичное производство"],
+      "goal": ["инвестиции", "оборотные средства"],
+      "requirements": ["реестр МСП", "статус малой технологической компании"]
+    },
+    "source_url": "https://xn--80aapampemcchfmo7a3c9ehj.xn--p1ai/news/lgotnye-kredity-i-subsidii-kak-v-rossii-pomogayut-razvivatsya-biznesu/"
+  },
+  {
+    "id": 13,
+    "name": "Займы Фонда развития промышленности (ФРП) для импортозамещения",
+    "type": "кредит",
+    "amount_min": 5000000,
+    "amount_max": 2000000000,
+    "interest_rate": 3.0,
+    "conditions": {
+      "region": ["все"],
+      "category": ["ИП", "ООО"],
+      "industry": ["промышленность", "производство", "импортозамещение"],
+      "goal": ["проекты развития", "производство комплектующих", "автокомпоненты", "лизинг", "маркировка товаров"],
+      "requirements": ["реестр МСП", "проект в сфере импортозамещения"]
+    },
+    "source_url": "https://xn--80aapampemcchfmo7a3c9ehj.xn--p1ai/news/lgotnye-kredity-i-subsidii-kak-v-rossii-pomogayut-razvivatsya-biznesu/"
+  },
+  {
+    "id": 14,
+    "name": "Грант для начинающих предпринимателей (региональный, пример)",
+    "type": "грант",
+    "amount_min": 100000,
+    "amount_max": 500000,
+    "interest_rate": null,
+    "conditions": {
+      "region": ["Нижегородская область"],
+      "category": ["ИП", "самозанятый"],
+      "industry": ["все"],
+      "goal": ["создание собственного дела"],
+      "requirements": ["регистрация менее 1 года", "обучение в сфере предпринимательства не менее 16 часов", "софинансирование 30%"]
+    },
+    "source_url": "https://sokolskoe.nobl.ru/presscenter/news/197242/"
+  },
+  {
+    "id": 15,
+    "name": "Грант на начало ведения предпринимательской деятельности (региональный, пример)",
+    "type": "грант",
+    "amount_min": 100000,
+    "amount_max": 500000,
+    "interest_rate": null,
+    "conditions": {
+      "region": ["Красноярский край"],
+      "category": ["ИП", "ООО"],
+      "industry": ["все"],
+      "goal": ["начало ведения предпринимательской деятельности"],
+      "requirements": ["регистрация менее 1 года", "софинансирование 15%", "отсутствие задолженностей по налогам"]
+    },
+    "source_url": "https://achinsk.gosuslugi.ru/netcat_files/253/2411/26_731_S6680_1_0015_Ob_yavlenie_ob_otbore.pdf"
+  }
+]

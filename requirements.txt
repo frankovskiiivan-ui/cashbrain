@@ -1,0 +1,5 @@
+
+maxapi
+sqlalchemy
+python-dotenv
+pytest
