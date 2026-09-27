@@ -20,7 +20,7 @@ class ProfileForm(State):
     waiting_for_capital = State()         # Ждём капитал
     waiting_for_target_revenue = State()  # Ждём цель по выручке
     finished = State()                    # Сбор завершён****
-
+```
 
 ## Архитектура 
 
