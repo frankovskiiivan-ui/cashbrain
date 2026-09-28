@@ -1,0 +1,778 @@
+[
+  {
+    "id": "findir_pro",
+    "name": "Финансовый директор | Мастер CFO",
+    "url": "https://max.ru/findir_pro",
+    "topics": [
+      "бизнес и стартапы",
+      "экономика",
+      "карьера"
+    ],
+    "description": "",
+    "subscribers": 9134,
+    "posts_total": 194,
+    "posts_last_30d": null,
+    "avg_views": 2200,
+    "avg_likes": 15,
+    "avg_comments": null,
+    "has_ads": true,
+    "ads_count_30d": null,
+    "updated_at": "2026-09-28"
+  },
+  {
+    "id": "olga_technoblog",
+    "name": "«ТехноБлог» Ольги Рыжовой",
+    "url": "https://max.ru/olga_technoblog",
+    "topics": [
+      "карьера",
+      "бизнес и стартапы"
+    ],
+    "description": "",
+    "subscribers": 7952,
+    "posts_total": 162,
+    "posts_last_30d": null,
+    "avg_views": 2200,
+    "avg_likes": 50,
+    "avg_comments": null,
+    "has_ads": false,
+    "ads_count_30d": null,
+    "updated_at": "2026-09-28"
+  },
+  {
+    "id": "millenniallife",
+    "name": "Типичный миллениал",
+    "url": "https://max.ru/millenniallife",
+    "topics": [
+      "карьера",
+      "психология",
+      "блоги"
+    ],
+    "description": "",
+    "subscribers": 6433,
+    "posts_total": 184,
+    "posts_last_30d": null,
+    "avg_views": 170,
+    "avg_likes": 7,
+    "avg_comments": null,
+    "has_ads": false,
+    "ads_count_30d": null,
+    "updated_at": "2026-09-28"
+  },
+  {
+    "id": "buh_fl",
+    "name": "Валентина Вердт про финансы и удаленку",
+    "url": "https://max.ru/buh_fl",
+    "topics": [
+      "образование",
+      "карьера",
+      "курсы и гайды"
+    ],
+    "description": "",
+    "subscribers": 5556,
+    "posts_total": 338,
+    "posts_last_30d": null,
+    "avg_views": 1150,
+    "avg_likes": 15,
+    "avg_comments": null,
+    "has_ads": false,
+    "ads_count_30d": null,
+    "updated_at": "2026-09-28"
+  },
+  {
+    "id": "namarketplacewithleo",
+    "name": "На Маркетплейсах с Лео Шевченко",
+    "url": "https://max.ru/namarketplacewithleo",
+    "topics": [
+      "бизнес и стартапы",
+      "продажи",
+      "курсы и гайды"
+    ],
+    "description": "",
+    "subscribers": 5086,
+    "posts_total": 658,
+    "posts_last_30d": null,
+    "avg_views": 2700,
+    "avg_likes": 40,
+    "avg_comments": null,
+    "has_ads": false,
+    "ads_count_30d": null,
+    "updated_at": "2026-09-28"
+  },
+  {
+    "id": "profinansy_post",
+    "name": "PRO.FINANSY",
+    "url": "https://max.ru/profinansy_post",
+    "topics": [
+      "экономика",
+      "блоги",
+      "карьера"
+    ],
+    "description": "",
+    "subscribers": 5054,
+    "posts_total": 664,
+    "posts_last_30d": null,
+    "avg_views": 650,
+    "avg_likes": 20,
+    "avg_comments": null,
+    "has_ads": false,
+    "ads_count_30d": null,
+    "updated_at": "2026-09-28"
+  },
+  {
+    "id": "vyakuba",
+    "name": "Владимир Якуба",
+    "url": "https://max.ru/vyakuba",
+    "topics": [
+      "продажи",
+      "бизнес и стартапы",
+      "курсы и гайды"
+    ],
+    "description": "",
+    "subscribers": 4820,
+    "posts_total": 275,
+    "posts_last_30d": null,
+    "avg_views": 1600,
+    "avg_likes": 40,
+    "avg_comments": null,
+    "has_ads": false,
+    "ads_count_30d": null,
+    "updated_at": "2026-09-28"
+  },
+  {
+    "id": "id366320675539_biz",
+    "name": "Без aspera",
+    "url": "https://max.ru/id366320675539_biz",
+    "topics": [
+      "карьера",
+      "бизнес и стартапы",
+      "образование"
+    ],
+    "description": "",
+    "subscribers": 4765,
+    "posts_total": 115,
+    "posts_last_30d": null,
+    "avg_views": 2000,
+    "avg_likes": 70,
+    "avg_comments": null,
+    "has_ads": true,
+    "ads_count_30d": null,
+    "updated_at": "2026-09-28"
+  },
+  {
+    "id": "sergei_ivanov_efko",
+    "name": "Сергей Иванов из ЭФКО",
+    "url": "https://max.ru/sergei_ivanov_efko",
+    "topics": [
+      "блоги",
+      "бизнес и стартапы"
+    ],
+    "description": "",
+    "subscribers": 4585,
+    "posts_total": 249,
+    "posts_last_30d": null,
+    "avg_views": 3200,
+    "avg_likes": 300,
+    "avg_comments": null,
+    "has_ads": false,
+    "ads_count_30d": null,
+    "updated_at": "2026-09-28"
+  },
+  {
+    "id": "Sinbrain",
+    "name": "Синявский считает",
+    "url": "https://max.ru/Sinbrain",
+    "topics": [
+      "блоги",
+      "бизнес и стартапы",
+      "здоровье и фитнес"
+    ],
+    "description": "",
+    "subscribers": 4398,
+    "posts_total": 124,
+    "posts_last_30d": null,
+    "avg_views": 1000,
+    "avg_likes": 50,
+    "avg_comments": null,
+    "has_ads": true,
+    "ads_count_30d": null,
+    "updated_at": "2026-09-28"
+  },
+  {
+    "id": "esvasilevaru",
+    "name": "Прорыв в репетиторстве | Елизавета",
+    "url": "https://max.ru/esvasilevaru",
+    "topics": [
+      "образование",
+      "бизнес и стартапы",
+      "карьера"
+    ],
+    "description": "",
+    "subscribers": 3918,
+    "posts_total": 86,
+    "posts_last_30d": null,
+    "avg_views": 1100,
+    "avg_likes": 20,
+    "avg_comments": null,
+    "has_ads": false,
+    "ads_count_30d": null,
+    "updated_at": "2026-09-28"
+  },
+  {
+    "id": "olgaberek",
+    "name": "Берек про маркетинг / продвижение в МАХ",
+    "url": "https://max.ru/olgaberek",
+    "topics": [
+      "маркетинг pr реклама",
+      "бизнес и стартапы",
+      "продажи"
+    ],
+    "description": "",
+    "subscribers": 3621,
+    "posts_total": 234,
+    "posts_last_30d": null,
+    "avg_views": 500,
+    "avg_likes": 40,
+    "avg_comments": null,
+    "has_ads": false,
+    "ads_count_30d": null,
+    "updated_at": "2026-09-28"
+  },
+  {
+    "id": "OxanaLavretieva",
+    "name": "OLOLOL Оксана Лаврентьева",
+    "url": "https://max.ru/OxanaLavretieva",
+    "topics": [
+      "блоги",
+      "психология",
+      "карьера"
+    ],
+    "description": "",
+    "subscribers": 3451,
+    "posts_total": 61,
+    "posts_last_30d": null,
+    "avg_views": 4200,
+    "avg_likes": 400,
+    "avg_comments": null,
+    "has_ads": false,
+    "ads_count_30d": null,
+    "updated_at": "2026-09-28"
+  },
+  {
+    "id": "financ_director",
+    "name": "Финансовый директор",
+    "url": "https://max.ru/financ_director",
+    "topics": [
+      "бизнес и стартапы",
+      "экономика",
+      "карьера"
+    ],
+    "description": "",
+    "subscribers": 3166,
+    "posts_total": 424,
+    "posts_last_30d": null,
+    "avg_views": 750,
+    "avg_likes": 10,
+    "avg_comments": null,
+    "has_ads": true,
+    "ads_count_30d": null,
+    "updated_at": "2026-09-28"
+  },
+  {
+    "id": "channel_girlCTR",
+    "name": "Девушка с CTR",
+    "url": "https://max.ru/channel_girlCTR",
+    "topics": [
+      "маркетинг pr реклама",
+      "бизнес и стартапы",
+      "карьера"
+    ],
+    "description": "",
+    "subscribers": 3072,
+    "posts_total": 11,
+    "posts_last_30d": null,
+    "avg_views": 1650,
+    "avg_likes": 50,
+    "avg_comments": null,
+    "has_ads": false,
+    "ads_count_30d": null,
+    "updated_at": "2026-09-28"
+  },
+  {
+    "id": "ozmanofficial",
+    "name": "OZMAN",
+    "url": "https://max.ru/ozmanofficial",
+    "topics": [
+      "бизнес и стартапы",
+      "познавательное",
+      "карьера"
+    ],
+    "description": "",
+    "subscribers": 3043,
+    "posts_total": 797,
+    "posts_last_30d": null,
+    "avg_views": 100,
+    "avg_likes": 0,
+    "avg_comments": null,
+    "has_ads": false,
+    "ads_count_30d": null,
+    "updated_at": "2026-09-28"
+  },
+  {
+    "id": "nashputwildberries",
+    "name": "Ушел из Газпрома на Wildberries",
+    "url": "https://max.ru/nashputwildberries",
+    "topics": [
+      "бизнес и стартапы",
+      "продажи",
+      "карьера"
+    ],
+    "description": "",
+    "subscribers": 3017,
+    "posts_total": 583,
+    "posts_last_30d": null,
+    "avg_views": 1200,
+    "avg_likes": 10,
+    "avg_comments": null,
+    "has_ads": false,
+    "ads_count_30d": null,
+    "updated_at": "2026-09-28"
+  },
+  {
+    "id": "channel_thirtyforfive",
+    "name": "Тридцатилетка за 5 лет💸",
+    "url": "https://max.ru/channel_thirtyforfive",
+    "topics": [
+      "блоги",
+      "экономика",
+      "карьера"
+    ],
+    "description": "",
+    "subscribers": 2714,
+    "posts_total": 343,
+    "posts_last_30d": null,
+    "avg_views": 700,
+    "avg_likes": 50,
+    "avg_comments": null,
+    "has_ads": true,
+    "ads_count_30d": null,
+    "updated_at": "2026-09-28"
+  },
+  {
+    "id": "id511500145670_biz",
+    "name": "Нейроденьги. Натэла Зубченко",
+    "url": "https://max.ru/id511500145670_biz",
+    "topics": [
+      "бизнес и стартапы",
+      "курсы и гайды",
+      "технологии"
+    ],
+    "description": "",
+    "subscribers": 2565,
+    "posts_total": 161,
+    "posts_last_30d": null,
+    "avg_views": 500,
+    "avg_likes": 15,
+    "avg_comments": null,
+    "has_ads": false,
+    "ads_count_30d": null,
+    "updated_at": "2026-09-28"
+  },
+  {
+    "id": "FounderWoman",
+    "name": "FounderWoman",
+    "url": "https://max.ru/FounderWoman",
+    "topics": [
+      "бизнес и стартапы",
+      "карьера",
+      "лингвистика"
+    ],
+    "description": "",
+    "subscribers": 2196,
+    "posts_total": 100,
+    "posts_last_30d": null,
+    "avg_views": 1200,
+    "avg_likes": 100,
+    "avg_comments": null,
+    "has_ads": false,
+    "ads_count_30d": null,
+    "updated_at": "2026-09-28"
+  },
+  {
+    "id": "ponomarela",
+    "name": "Елена Пономарева - канал о кадровом учете и трудовых отношениях",
+    "url": "https://max.ru/ponomarela",
+    "topics": [
+      "право",
+      "карьера",
+      "образование"
+    ],
+    "description": "",
+    "subscribers": 1894,
+    "posts_total": 285,
+    "posts_last_30d": null,
+    "avg_views": 1000,
+    "avg_likes": 20,
+    "avg_comments": null,
+    "has_ads": false,
+    "ads_count_30d": null,
+    "updated_at": "2026-09-28"
+  },
+  {
+    "id": "id524808134320_biz",
+    "name": "Заметки отельерки | гостиничный бизнес",
+    "url": "https://max.ru/id524808134320_biz",
+    "topics": [
+      "бизнес и стартапы",
+      "продажи",
+      "карьера"
+    ],
+    "description": "",
+    "subscribers": 1767,
+    "posts_total": 148,
+    "posts_last_30d": null,
+    "avg_views": 120,
+    "avg_likes": 20,
+    "avg_comments": null,
+    "has_ads": true,
+    "ads_count_30d": null,
+    "updated_at": "2026-09-28"
+  },
+  {
+    "id": "materovaolesya",
+    "name": "Деньги и Благополучие I Проект Олеси Матёровой",
+    "url": "https://max.ru/materovaolesya",
+    "topics": [
+      "курсы и гайды",
+      "бизнес и стартапы",
+      "карьера"
+    ],
+    "description": "",
+    "subscribers": 1713,
+    "posts_total": 265,
+    "posts_last_30d": null,
+    "avg_views": 400,
+    "avg_likes": 10,
+    "avg_comments": null,
+    "has_ads": false,
+    "ads_count_30d": null,
+    "updated_at": "2026-09-28"
+  },
+  {
+    "id": "workfortop",
+    "name": "Вакансии для руководителей | Кленова Екатерина | Новости рынка труда | Аналитика | Поиск работы для топ менеджеров | Карьера топ менеджера",
+    "url": "https://max.ru/workfortop",
+    "topics": [
+      "карьера",
+      "бизнес и стартапы"
+    ],
+    "description": "",
+    "subscribers": 1704,
+    "posts_total": 829,
+    "posts_last_30d": null,
+    "avg_views": 450,
+    "avg_likes": 0,
+    "avg_comments": null,
+    "has_ads": true,
+    "ads_count_30d": null,
+    "updated_at": "2026-09-28"
+  },
+  {
+    "id": "id246213815352_biz",
+    "name": "Бухгалтерский бизнес Екатерина Сидиченко",
+    "url": "https://max.ru/id246213815352_biz",
+    "topics": [
+      "бизнес и стартапы",
+      "продажи"
+    ],
+    "description": "",
+    "subscribers": 1671,
+    "posts_total": 573,
+    "posts_last_30d": null,
+    "avg_views": 400,
+    "avg_likes": 7,
+    "avg_comments": null,
+    "has_ads": true,
+    "ads_count_30d": null,
+    "updated_at": "2026-09-28"
+  },
+  {
+    "id": "OUmGVG2n7h8FDrEIFbogdudWZmIkpDQLQxWvPbpr0Yk",
+    "name": "Ирина Коломиец GREENWAY",
+    "url": "https://max.ru/join/OUmGVG2n7h8FDrEIFbogdudWZmIkpDQLQxWvPbpr0Yk",
+    "topics": [
+      "бизнес и стартапы",
+      "карьера",
+      "продажи"
+    ],
+    "description": "",
+    "subscribers": 1639,
+    "posts_total": 244,
+    "posts_last_30d": null,
+    "avg_views": 150,
+    "avg_likes": 30,
+    "avg_comments": null,
+    "has_ads": false,
+    "ads_count_30d": null,
+    "updated_at": "2026-09-28"
+  },
+  {
+    "id": "channel_travel32",
+    "name": "Турагент на Позитиве | Елена Гринева | Туры и Обучение",
+    "url": "https://max.ru/channel_travel32",
+    "topics": [
+      "путешествия",
+      "бизнес и стартапы",
+      "курсы и гайды"
+    ],
+    "description": "",
+    "subscribers": 1638,
+    "posts_total": 407,
+    "posts_last_30d": null,
+    "avg_views": 100,
+    "avg_likes": 5,
+    "avg_comments": null,
+    "has_ads": false,
+    "ads_count_30d": null,
+    "updated_at": "2026-09-28"
+  },
+  {
+    "id": "id773470971306_biz",
+    "name": "Эксперт-кадровик",
+    "url": "https://max.ru/id773470971306_biz",
+    "topics": [
+      "право",
+      "карьера",
+      "бизнес и стартапы"
+    ],
+    "description": "",
+    "subscribers": 1628,
+    "posts_total": 116,
+    "posts_last_30d": null,
+    "avg_views": 500,
+    "avg_likes": 3,
+    "avg_comments": null,
+    "has_ads": false,
+    "ads_count_30d": null,
+    "updated_at": "2026-09-28"
+  },
+  {
+    "id": "channel_zinin_atomy",
+    "name": "Денис про Атоми",
+    "url": "https://max.ru/channel_zinin_atomy",
+    "topics": [
+      "бизнес и стартапы",
+      "продажи",
+      "карьера"
+    ],
+    "description": "",
+    "subscribers": 1606,
+    "posts_total": 342,
+    "posts_last_30d": null,
+    "avg_views": 1000,
+    "avg_likes": 30,
+    "avg_comments": null,
+    "has_ads": false,
+    "ads_count_30d": null,
+    "updated_at": "2026-09-28"
+  },
+  {
+    "id": "channel_founder",
+    "name": "Фаундер в Деле",
+    "url": "https://max.ru/channel_founder",
+    "topics": [
+      "бизнес и стартапы",
+      "лингвистика",
+      "карьера"
+    ],
+    "description": "",
+    "subscribers": 1515,
+    "posts_total": 38,
+    "posts_last_30d": null,
+    "avg_views": 1500,
+    "avg_likes": 0,
+    "avg_comments": null,
+    "has_ads": false,
+    "ads_count_30d": null,
+    "updated_at": "2026-09-28"
+  },
+  {
+    "id": "kteleshova",
+    "name": "Ксения Телешова|Личностный рост",
+    "url": "https://max.ru/kteleshova",
+    "topics": [
+      "карьера",
+      "психология",
+      "лингвистика"
+    ],
+    "description": "",
+    "subscribers": 1486,
+    "posts_total": 217,
+    "posts_last_30d": null,
+    "avg_views": 900,
+    "avg_likes": 50,
+    "avg_comments": null,
+    "has_ads": false,
+    "ads_count_30d": null,
+    "updated_at": "2026-09-28"
+  },
+  {
+    "id": "id770100740098_biz",
+    "name": "Надежда Батанова | Nadezhda v HR",
+    "url": "https://max.ru/id770100740098_biz",
+    "topics": [
+      "карьера",
+      "бизнес и стартапы",
+      "психология"
+    ],
+    "description": "",
+    "subscribers": 1431,
+    "posts_total": 248,
+    "posts_last_30d": null,
+    "avg_views": 1000,
+    "avg_likes": 50,
+    "avg_comments": null,
+    "has_ads": false,
+    "ads_count_30d": null,
+    "updated_at": "2026-09-28"
+  },
+  {
+    "id": "channel_tanya_pro_finance",
+    "name": "Таня про финансы",
+    "url": "https://max.ru/channel_tanya_pro_finance",
+    "topics": [
+      "экономика",
+      "карьера",
+      "курсы и гайды"
+    ],
+    "description": "",
+    "subscribers": 1410,
+    "posts_total": 248,
+    "posts_last_30d": null,
+    "avg_views": 400,
+    "avg_likes": 30,
+    "avg_comments": null,
+    "has_ads": true,
+    "ads_count_30d": null,
+    "updated_at": "2026-09-28"
+  },
+  {
+    "id": "id540960955141_biz",
+    "name": "Уверенность в себе и самоценность | ОКСАНА ЯХНЕНКО",
+    "url": "https://max.ru/id540960955141_biz",
+    "topics": [
+      "экономика",
+      "карьера",
+      "бизнес и стартапы"
+    ],
+    "description": "",
+    "subscribers": 1001,
+    "posts_total": 183,
+    "posts_last_30d": null,
+    "avg_views": 300,
+    "avg_likes": 10,
+    "avg_comments": null,
+    "has_ads": false,
+    "ads_count_30d": null,
+    "updated_at": "2026-09-28"
+  },
+  {
+    "id": "channel_stanchev ",
+    "name": "Станчев говорит",
+    "url": "https://max.ru/channel_stanchev ",
+    "topics": [
+      "образование",
+      "карьера",
+      "блоги"
+    ],
+    "description": "",
+    "subscribers": 952,
+    "posts_total": 340,
+    "posts_last_30d": null,
+    "avg_views": 450,
+    "avg_likes": 0,
+    "avg_comments": null,
+    "has_ads": false,
+    "ads_count_30d": null,
+    "updated_at": "2026-09-28"
+  },
+  {
+    "id": "glavkadry",
+    "name": "Главкадр вещает/ трудовое право, обучение",
+    "url": "https://max.ru/glavkadry",
+    "topics": [
+      "право",
+      "карьера",
+      "курсы и гайды"
+    ],
+    "description": "",
+    "subscribers": 910,
+    "posts_total": 1802,
+    "posts_last_30d": null,
+    "avg_views": 170,
+    "avg_likes": 0,
+    "avg_comments": null,
+    "has_ads": false,
+    "ads_count_30d": null,
+    "updated_at": "2026-09-28"
+  },
+  {
+    "id": "happycareerclub",
+    "name": "Секреты карьеры с Кариной Лебедевой",
+    "url": "https://max.ru/happycareerclub",
+    "topics": [
+      "карьера",
+      "бизнес и стартапы",
+      "образование"
+    ],
+    "description": "",
+    "subscribers": 821,
+    "posts_total": 260,
+    "posts_last_30d": null,
+    "avg_views": 450,
+    "avg_likes": 0,
+    "avg_comments": null,
+    "has_ads": false,
+    "ads_count_30d": null,
+    "updated_at": "2026-09-28"
+  },
+  {
+    "id": "devushkasdengami",
+    "name": "Девушка с Деньгами",
+    "url": "https://max.ru/devushkasdengami",
+    "topics": [
+      "карьера",
+      "бизнес и стартапы",
+      "экономика"
+    ],
+    "description": "",
+    "subscribers": 820,
+    "posts_total": 130,
+    "posts_last_30d": null,
+    "avg_views": 500,
+    "avg_likes": 0,
+    "avg_comments": null,
+    "has_ads": false,
+    "ads_count_30d": null,
+    "updated_at": "2026-09-28"
+  },
+  {
+    "id": "id615000020841_biz",
+    "name": "Людмила Колтырина | Бизнес-наставник МЛМ. Как развивать сетевой онлайн",
+    "url": "https://max.ru/id615000020841_biz",
+    "topics": [
+      "бизнес и стартапы",
+      "продажи",
+      "карьера"
+    ],
+    "description": "",
+    "subscribers": 755,
+    "posts_total": 215,
+    "posts_last_30d": null,
+    "avg_views": 200,
+    "avg_likes": 0,
+    "avg_comments": null,
+    "has_ads": false,
+    "ads_count_30d": null,
+    "updated_at": "2026-09-28"
+  }
+]

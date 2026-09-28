@@ -3,3 +3,4 @@ maxapi
 sqlalchemy
 python-dotenv
 pytest
+openpyxl
