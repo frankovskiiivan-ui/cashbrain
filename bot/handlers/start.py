@@ -45,7 +45,7 @@ def register_start_handlers(dp: Dispatcher):
         await context.clear()  # сбрасываем прошлый диалог
         await context.set_state(ProfileForm.waiting_for_industry)
         await event.message.answer(
-            "**Шаг 1 из 4:** В какой сфере вы работаете?\n"
+            "Шаг 1 из 4: В какой сфере вы работаете?\n"
             "Например: «кофейня», «IT-услуги», «производство»."
         )
 

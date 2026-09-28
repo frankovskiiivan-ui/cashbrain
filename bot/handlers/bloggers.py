@@ -45,7 +45,7 @@ class BloggersForm(State):
 # ─────────────────────────────────────────────────────────────
 
 def format_topic_prompt() -> str:
-    return "📚 **Выберите тему блога кнопкой ниже** или напишите номер из списка.\n"
+    return "📚 Выберите тему блога кнопкой ниже или напишите номер из списка.\n"
 
 
 def resolve_topic_by_index(index: int) -> list[str] | None:
@@ -93,7 +93,7 @@ def format_blogger_card(b: dict, index: int) -> str:
     else:
         ads_line = "❓ Реклама: неизвестно"
     return (
-        f"**{index}. {name}**\n"
+        f"{index}. {name}\n"
         f"🔗 {url}\n"
         f"🏷 {topics}\n"
         f"👥 {subs:,} подписчиков\n"
@@ -112,7 +112,7 @@ def format_bloggers_report(bloggers: list[dict]) -> str:
             "😔 Не найдено блогеров по вашим параметрам.\n"
             "Попробуйте расширить диапазон подписчиков или выбрать другую тему."
         )
-    lines = [f"🔍 **Найдено блогеров: {len(bloggers)}**\n"]
+    lines = [f"🔍 Найдено блогеров: {len(bloggers)}\n"]
     for i, b in enumerate(bloggers, 1):
         lines.append(format_blogger_card(b, i))
     return "\n".join(lines)
@@ -171,7 +171,7 @@ async def _finish_and_show(message, context: MemoryContext, only_with_ads: bool)
 
 async def _ask_min_subs(message):
     await message.answer(
-        "**Шаг 2 из 4:** Минимальное число подписчиков?\n"
+        "Шаг 2 из 4: Минимальное число подписчиков?\n"
         "Напишите число или нажмите «Пропустить».",
         attachments=[get_bloggers_skip_keyboard("min")],
     )
@@ -179,7 +179,7 @@ async def _ask_min_subs(message):
 
 async def _ask_max_subs(message):
     await message.answer(
-        "**Шаг 3 из 4:** Максимальное число подписчиков?\n"
+        "Шаг 3 из 4: Максимальное число подписчиков?\n"
         "Напишите число или нажмите «Пропустить».",
         attachments=[get_bloggers_skip_keyboard("max")],
     )
@@ -221,7 +221,7 @@ async def handle_max_subs(event, context: MemoryContext):
     await context.update_data(max_subs=max_subs)
     await context.set_state(BloggersForm.waiting_for_ads_filter)
     await event.message.answer(
-        "**Шаг 4 из 4:** Показывать только тех, кто уже размещает рекламу?",
+        "Шаг 4 из 4: Показывать только тех, кто уже размещает рекламу?",
         attachments=[get_bloggers_ads_keyboard()],
     )
 
@@ -243,6 +243,11 @@ async def handle_ads_text(event, context: MemoryContext):
 # ─────────────────────────────────────────────────────────────
 
 def register_bloggers_handlers(dp: Dispatcher):
+    @dp.message_callback(F.callback.payload == "bloggers:start")
+    async def on_start_from_budget(event: MessageCallback, context: MemoryContext):
+        await event.answer()
+        # Состояние и данные (marketing_budget) уже сохранены в context
+        await start_bloggers_flow(event, context)
 
     # ─── Шаг 1: тема кнопкой ───
     @dp.message_callback(F.callback.payload.startswith("bloggers:topic:"))
@@ -288,7 +293,7 @@ def register_bloggers_handlers(dp: Dispatcher):
             await context.update_data(max_subs=None)
             await context.set_state(BloggersForm.waiting_for_ads_filter)
             await event.message.answer(
-                "**Шаг 4 из 4:** Показывать только тех, кто уже размещает рекламу?",
+                "Шаг 4 из 4: Показывать только тех, кто уже размещает рекламу?",
                 attachments=[get_bloggers_ads_keyboard()],
             )
 

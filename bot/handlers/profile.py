@@ -28,7 +28,7 @@ async def handle_industry(event, context: MemoryContext):
     await context.update_data(industry=industry)
     await context.set_state(ProfileForm.waiting_for_region)
     await event.message.answer(
-        "**Шаг 2 из 4:** В каком регионе вы ведёте деятельность?\n"
+        "Шаг 2 из 4: В каком регионе вы ведёте деятельность?\n"
         "Например: «Нижегородская область», «Республика Татарстан»."
     )
 
@@ -38,7 +38,7 @@ async def handle_region(event, context: MemoryContext):
     await context.update_data(region=region)
     await context.set_state(ProfileForm.waiting_for_capital)
     await event.message.answer(
-        "**Шаг 3 из 4:** Какой у вас начальный капитал?\n"
+        "Шаг 3 из 4: Какой у вас начальный капитал?\n"
         "Напишите сумму в рублях, например: «500000»."
     )
 
@@ -51,7 +51,7 @@ async def handle_capital(event, context: MemoryContext):
     await context.update_data(capital=capital)
     await context.set_state(ProfileForm.waiting_for_target_revenue)
     await event.message.answer(
-        "**Шаг 4 из 4:** Какую ежемесячную выручку вы хотите получать?\n\n"
+        "Шаг 4 из 4: Какую ежемесячную выручку вы хотите получать?\n\n"
         "• Если вы уже работаете — укажите текущую.\n"
         "• Если только планируете — укажите цель.\n\n"
         "Напишите сумму в рублях, например: «150000»."

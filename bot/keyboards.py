@@ -33,19 +33,32 @@ def get_programs_keyboard():
     builder = InlineKeyboardBuilder()
     builder.add(
         CallbackButton(text="📊 Рассчитать доход", payload="programs:calculate"),
-        CallbackButton(text="💰 Распределить бюджет", payload="programs:budget"),
     )
     builder.adjust(1)
     return builder.as_markup()
 
 
 def get_budget_keyboard():
-    """Выбор сценария бюджета."""
+    """Выбор сценария бюджета + переход к блогерам + возврат в меню."""
     builder = InlineKeyboardBuilder()
     builder.add(
         CallbackButton(text="🟢 Осторожный", payload="budget:cautious"),
         CallbackButton(text="🟡 Сбалансированный", payload="budget:balanced"),
         CallbackButton(text="🔴 Агрессивный", payload="budget:aggressive"),
+    )
+    builder.add(
+        CallbackButton(text="🏠 В главное меню", payload="menu:main"),
+    )
+    builder.adjust(1)
+    return builder.as_markup()
+
+
+def get_after_budget_keyboard():
+    """После выбора сценария: перейти к блогерам или в меню."""
+    builder = InlineKeyboardBuilder()
+    builder.add(
+        CallbackButton(text="📢 Найти блогеров", payload="bloggers:start"),
+        CallbackButton(text="🏠 В главное меню", payload="menu:main"),
     )
     builder.adjust(1)
     return builder.as_markup()
@@ -120,6 +133,15 @@ def get_bloggers_restart_keyboard():
     builder = InlineKeyboardBuilder()
     builder.add(
         CallbackButton(text="🔄 Найти ещё блогеров", payload="bloggers:restart"),
+        CallbackButton(text="🏠 В главное меню", payload="menu:main"),
+    )
+    builder.adjust(1)
+    return builder.as_markup()
+
+def get_back_to_menu_keyboard():
+    """Кнопка возврата в главное меню."""
+    builder = InlineKeyboardBuilder()
+    builder.add(
         CallbackButton(text="🏠 В главное меню", payload="menu:main"),
     )
     builder.adjust(1)

@@ -184,7 +184,7 @@ def run_scenario(profile: dict) -> str:
 
         for scenario_key in ["cautious", "balanced", "aggressive"]:
             allocation = calculate_budget_allocation(total_funding, scenario_key)
-            print(f"**{allocation['label']}** — {allocation['description']}")
+            print(f"{allocation['label']} — {allocation['description']}")
             print(f"   🏭 Оборудование: {allocation['equipment']:,.0f} ₽")
             print(f"   📢 Маркетинг: {allocation['marketing']:,.0f} ₽")
             print(f"   🏠 Аренда: {allocation['rent']:,.0f} ₽")

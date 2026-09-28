@@ -14,7 +14,7 @@ from core.marketing import (
 
 # ──────────── Фикстуры ────────────
 
-def make_blogger(**kwargs) -> dict:
+def make_blogger(kwargs) -> dict:
     """Быстрый конструктор блогера со значениями по умолчанию."""
     base = {
         "id": "test",
