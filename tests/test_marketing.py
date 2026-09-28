@@ -145,11 +145,18 @@ def test_calculate_reach_over_100():
 
 # ──────────── score_blogger ────────────
 
-def test_score_blogger_has_ads_bonus():
-    """Блогер с рекламой получает +20 баллов."""
+def test_score_blogger_ads_does_not_affect():
+    """Реклама — это фильтр, а не критерий оценки. Score не должен зависеть от has_ads."""
     b_no_ads = make_blogger(has_ads=False)
     b_with_ads = make_blogger(has_ads=True)
-    assert score_blogger(b_with_ads) > score_blogger(b_no_ads)
+    assert score_blogger(b_no_ads) == score_blogger(b_with_ads)
+
+
+def test_score_blogger_max_is_100():
+    """Максимальный score — 100 (ER=10%, Reach=100%)."""
+    b = make_blogger(subscribers=1000, avg_likes=100, avg_views=1000)
+    # ER = 10%, Reach = 100%
+    assert score_blogger(b) == 100.0
 
 
 def test_score_blogger_in_range():
