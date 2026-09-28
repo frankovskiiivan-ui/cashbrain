@@ -1,8 +1,5 @@
 """
 Модуль подбора блогеров для рекламы.
-
-Функции handle_* вызываются из bot/handlers/router.py — по state.
-Callback-хендлеры регистрируются через register_bloggers_handlers.
 """
 
 import logging
@@ -19,6 +16,7 @@ from bot.keyboards import (
     get_bloggers_topics_keyboard,
     get_bloggers_ads_keyboard,
     get_bloggers_restart_keyboard,
+    get_bloggers_skip_keyboard,
 )
 
 logger = logging.getLogger(__name__)
@@ -133,6 +131,10 @@ async def start_bloggers_flow(event, context: MemoryContext):
     )
 
 
+# ─────────────────────────────────────────────────────────────
+#  Финальная логика
+# ─────────────────────────────────────────────────────────────
+
 async def _finish_and_show(message, context: MemoryContext, only_with_ads: bool):
     user_data = await context.get_data()
     selected_topics = user_data.get("selected_topics")
@@ -164,8 +166,24 @@ async def _finish_and_show(message, context: MemoryContext, only_with_ads: bool)
 
 
 # ─────────────────────────────────────────────────────────────
-#  Текстовые обработчики (вызываются из router.py)
+#  Текстовые шаги (вызываются из router.py)
 # ─────────────────────────────────────────────────────────────
+
+async def _ask_min_subs(message):
+    await message.answer(
+        "**Шаг 2 из 4:** Минимальное число подписчиков?\n"
+        "Напишите число или нажмите «Пропустить».",
+        attachments=[get_bloggers_skip_keyboard("min")],
+    )
+
+
+async def _ask_max_subs(message):
+    await message.answer(
+        "**Шаг 3 из 4:** Максимальное число подписчиков?\n"
+        "Напишите число или нажмите «Пропустить».",
+        attachments=[get_bloggers_skip_keyboard("max")],
+    )
+
 
 async def handle_topic_text(event, context: MemoryContext):
     topics, error = resolve_topic_by_text(event.message.body.text)
@@ -174,10 +192,7 @@ async def handle_topic_text(event, context: MemoryContext):
         return
     await context.update_data(selected_topics=topics)
     await context.set_state(BloggersForm.waiting_for_min_subs)
-    await event.message.answer(
-        "**Шаг 2 из 4:** Минимальное число подписчиков?\n"
-        "Напишите число или «Пропустить»."
-    )
+    await _ask_min_subs(event.message)
 
 
 async def handle_min_subs(event, context: MemoryContext):
@@ -191,10 +206,7 @@ async def handle_min_subs(event, context: MemoryContext):
             return
     await context.update_data(min_subs=min_subs)
     await context.set_state(BloggersForm.waiting_for_max_subs)
-    await event.message.answer(
-        "**Шаг 3 из 4:** Максимальное число подписчиков?\n"
-        "Напишите число или «Пропустить»."
-    )
+    await _ask_max_subs(event.message)
 
 
 async def handle_max_subs(event, context: MemoryContext):
@@ -232,6 +244,7 @@ async def handle_ads_text(event, context: MemoryContext):
 
 def register_bloggers_handlers(dp: Dispatcher):
 
+    # ─── Шаг 1: тема кнопкой ───
     @dp.message_callback(F.callback.payload.startswith("bloggers:topic:"))
     async def on_topic_button(event: MessageCallback, context: MemoryContext):
         await event.answer()
@@ -249,11 +262,37 @@ def register_bloggers_handlers(dp: Dispatcher):
                 return
         await context.update_data(selected_topics=selected_topics)
         await context.set_state(BloggersForm.waiting_for_min_subs)
-        await event.message.answer(
-            "**Шаг 2 из 4:** Минимальное число подписчиков?\n"
-            "Напишите число или «Пропустить»."
-        )
+        await _ask_min_subs(event.message)
 
+    # ─── Шаги 2 и 3: «Пропустить» ───
+    @dp.message_callback(F.callback.payload.startswith("bloggers:skip:"))
+    async def on_skip(event: MessageCallback, context: MemoryContext):
+        await event.answer()
+        payload = event.callback.payload  # bloggers:skip:min | bloggers:skip:max
+        step = payload.split(":", 2)[2]
+
+        if step == "min":
+            state = await context.get_state()
+            if state != BloggersForm.waiting_for_min_subs:
+                await event.message.answer("Эта кнопка уже неактуальна.")
+                return
+            await context.update_data(min_subs=None)
+            await context.set_state(BloggersForm.waiting_for_max_subs)
+            await _ask_max_subs(event.message)
+
+        elif step == "max":
+            state = await context.get_state()
+            if state != BloggersForm.waiting_for_max_subs:
+                await event.message.answer("Эта кнопка уже неактуальна.")
+                return
+            await context.update_data(max_subs=None)
+            await context.set_state(BloggersForm.waiting_for_ads_filter)
+            await event.message.answer(
+                "**Шаг 4 из 4:** Показывать только тех, кто уже размещает рекламу?",
+                attachments=[get_bloggers_ads_keyboard()],
+            )
+
+    # ─── Шаг 4: реклама кнопкой ───
     @dp.message_callback(F.callback.payload.startswith("bloggers:ads:"))
     async def on_ads_button(event: MessageCallback, context: MemoryContext):
         await event.answer()
@@ -265,6 +304,7 @@ def register_bloggers_handlers(dp: Dispatcher):
         only_with_ads = (token == "yes")
         await _finish_and_show(event.message, context, only_with_ads)
 
+    # ─── «Найти ещё блогеров» ───
     @dp.message_callback(F.callback.payload == "bloggers:restart")
     async def on_restart(event: MessageCallback, context: MemoryContext):
         await event.answer()

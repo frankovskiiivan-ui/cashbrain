@@ -97,3 +97,30 @@ def get_bloggers_restart_keyboard():
     )
     builder.adjust(1)
     return builder.as_markup()
+
+def get_bloggers_skip_keyboard(step: str):
+    """
+    Кнопка «Пропустить» для шагов 2 и 3.
+
+    step: "min" или "max" — используется в payload.
+    """
+    builder = InlineKeyboardBuilder()
+    builder.add(
+        CallbackButton(
+            text="⏭ Пропустить",
+            payload=f"bloggers:skip:{step}",
+        )
+    )
+    builder.adjust(1)
+    return builder.as_markup()
+
+
+def get_bloggers_restart_keyboard():
+    """После выдачи результатов: найти ещё / в главное меню."""
+    builder = InlineKeyboardBuilder()
+    builder.add(
+        CallbackButton(text="🔄 Найти ещё блогеров", payload="bloggers:restart"),
+        CallbackButton(text="🏠 В главное меню", payload="menu:main"),
+    )
+    builder.adjust(1)
+    return builder.as_markup()

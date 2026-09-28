@@ -42,6 +42,7 @@ def register_start_handlers(dp: Dispatcher):
     @dp.message_callback(F.callback.payload == "menu:programs")
     async def menu_programs(event: MessageCallback, context: MemoryContext):
         await event.answer()
+        await context.clear()  # сбрасываем прошлый диалог
         await context.set_state(ProfileForm.waiting_for_industry)
         await event.message.answer(
             "**Шаг 1 из 4:** В какой сфере вы работаете?\n"
@@ -52,29 +53,13 @@ def register_start_handlers(dp: Dispatcher):
     @dp.message_callback(F.callback.payload == "menu:bloggers")
     async def menu_bloggers(event: MessageCallback, context: MemoryContext):
         await event.answer()
+        await context.clear()  # сбрасываем прошлый диалог
         from bot.handlers.bloggers import start_bloggers_flow
-
-        # start_bloggers_flow ожидает event с .message, поэтому передаём сам event
         await start_bloggers_flow(event, context)
 
-    # # ─── Текстовый ввод 1/2 как fallback ───
-    # @dp.message_created(F.message.body.text)
-    # async def handle_menu_text(event: MessageCreated, context: MemoryContext):
-    #     current_state = await context.get_state()
-    #     if current_state != MainMenuForm.waiting_for_choice:
-    #         return  # это сообщение не для нас
-    #     text = event.message.body.text.strip()
-    #     if text == "1":
-    #         await context.set_state(ProfileForm.waiting_for_industry)
-    #         await event.message.answer(
-    #             "**Шаг 1 из 4:** В какой сфере вы работаете?\n"
-    #             "Например: «кофейня», «IT-услуги», «производство»."
-    #         )
-    #     elif text == "2":
-    #         from bot.handlers.bloggers import start_bloggers_flow
-    #         await start_bloggers_flow(event, context)
-    #     else:
-    #         await event.message.answer(
-    #             "Пожалуйста, выберите действие кнопкой или напишите 1/2.",
-    #             attachments=[get_main_menu_keyboard()],
-    #         )
+    # ─── Кнопка «В главное меню» ───
+    @dp.message_callback(F.callback.payload == "menu:main")
+    async def menu_main(event: MessageCallback, context: MemoryContext):
+        await event.answer()
+        await context.clear()
+        await show_main_menu(event.message, context)
