@@ -12,9 +12,10 @@
 
 import logging
 from maxapi import Dispatcher, F
-from maxapi.types import MessageCreated, State, CallbackQuery
+from maxapi.types import MessageCreated, MessageCallback
+from maxapi.context.state_machine import State
 from maxapi.context import MemoryContext
-from maxapi.filters.callback import CallbackData
+from maxapi.filters.callback_payload import CallbackPayload
 
 from bot.keyboards import get_programs_keyboard, get_budget_keyboard
 
@@ -99,19 +100,19 @@ def register_programs_handlers(dp: Dispatcher):
 
         await event.message.answer(
             "Выберите действие с помощью кнопок ниже 👇",
-            keyboard=get_programs_keyboard()  # 👈 клавиатура
+            attachments=[get_programs_keyboard()],
         )
 
     # ─────────────────────────────────────────────────────────
     # Обработка нажатий на кнопки
     # ─────────────────────────────────────────────────────────
-    @dp.callback_query(CallbackData("programs:calculate"))
-    async def on_calculate(callback: CallbackQuery, context: MemoryContext):
+    @dp.message_callback(F.callback.payload == "programs:calculate")
+    async def on_calculate(callback: MessageCallback, context: MemoryContext):
         await callback.answer()  # убираем «часики» на кнопке
         await _handle_calculate(callback.message, context)
 
-    @dp.callback_query(CallbackData("programs:budget"))
-    async def on_budget(callback: CallbackQuery, context: MemoryContext):
+    @dp.message_callback(F.callback.payload == "programs:calculate")
+    async def on_budget(callback: MessageCallback, context: MemoryContext):
         await callback.answer()
         await _handle_budget(callback.message, context)
 
@@ -152,7 +153,7 @@ async def _handle_calculate(message, context: MemoryContext):
     # 👇 Убираем текстовую подсказку, добавляем клавиатуру
     await message.answer(
         report,
-        keyboard=get_budget_keyboard()  # 👈 кнопки выбора бюджета
+        attachments=[get_budget_keyboard()],  # 👈 кнопки выбора бюджета
     )
     await context.set_state(ProgramsForm.finished)
 
@@ -167,7 +168,7 @@ async def _handle_budget(message, context: MemoryContext):
     if total_funding <= 0:
         await message.answer(
             "⚠️ Сначала нужно рассчитать доход. Нажмите **«Рассчитать доход»**.",
-            keyboard=get_programs_keyboard()
+            attachments=[get_programs_keyboard()],
         )
         return
 
@@ -176,6 +177,6 @@ async def _handle_budget(message, context: MemoryContext):
     # 👇 Добавляем клавиатуру для выбора сценария бюджета
     await message.answer(
         report,
-        keyboard=get_budget_keyboard()  # 👈 кнопки бюджета
+        attachments=[get_budget_keyboard()], # 👈 кнопки бюджета
     )
     await context.set_state(BudgetForm.waiting_for_budget_choice)

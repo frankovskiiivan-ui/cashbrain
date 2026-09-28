@@ -8,13 +8,15 @@ import asyncio
 import logging
 from dotenv import load_dotenv
 from maxapi import Bot, Dispatcher
+from maxapi.types import BotCommand
 
 from data.db import init_db
 from data.loader import load_programs_from_json
 from bot.handlers.start import register_start_handlers
-from bot.handlers.profile import register_profile_handlers
+#from bot.handlers.profile import register_profile_handlers
 from bot.handlers.programs import register_programs_handlers
 from bot.handlers.budget import register_budget_handlers
+from bot.handlers.bloggers import register_bloggers_handlers
 
 # Загружаем переменные окружения
 load_dotenv()
@@ -31,11 +33,13 @@ logger = logging.getLogger(__name__)
 bot = Bot()
 dp = Dispatcher()
 
-# Регистрируем все обработчики
-register_start_handlers(dp)
-register_profile_handlers(dp)
-register_programs_handlers(dp)
-register_budget_handlers(dp)
+from bot.handlers.router import register_text_router
+register_start_handlers(dp)       # /start и callback'и меню
+register_text_router(dp)          # ← ЕДИНЫЙ роутер текстовых сообщений
+
+register_programs_handlers(dp)    # callback'и программ
+register_budget_handlers(dp)      # callback'и бюджета
+register_bloggers_handlers(dp)    # callback'и блогеров
 
 
 async def main():
@@ -49,6 +53,11 @@ async def main():
     # 2. Загружаем программы из JSON в БД
     load_programs_from_json()
     logger.info("✅ Программы загружены")
+
+    await bot.set_commands(
+        BotCommand(name="start", description="Запустить бота"),
+    )
+    
 
     # 3. Запускаем polling
     logger.info("🤖 Бот запущен и слушает сообщения")

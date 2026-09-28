@@ -11,7 +11,7 @@ import re
 from pathlib import Path
 from openpyxl import load_workbook
 
-EXCEL_PATH = Path("самая лучшая соцсеть!!!!.xlsx")
+EXCEL_PATH = Path("blogers.xlsx")
 OUTPUT_PATH = Path("data/sources/bloggers.json")
 SHEET_NAME = "Лист4"
 

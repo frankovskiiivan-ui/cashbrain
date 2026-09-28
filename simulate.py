@@ -3,13 +3,17 @@
 """
 Симулятор диалога с ботом CashBrain.
 
-Позволяет пройти весь сценарий в терминале, без MAX.
+Позволяет пройти сценарий в терминале, без MAX.
 Имитирует ввод пользователя и вызывает те же функции,
 что и обработчики бота.
+
+Сценарии:
+    1. Подбор госпрограмм поддержки (профиль ИП → программы → бюджет)
+    2. Подбор блогеров для рекламы (тема → подписчики → реклама → выдача)
 """
 
 from data.db import init_db
-from data.loader import load_programs_from_json
+from data.loader import load_programs_from_json, load_bloggers_from_json
 from core.matcher import find_matching_programs
 from core.calculator import (
     calculate_all_scenarios,
@@ -18,6 +22,7 @@ from core.calculator import (
     format_programs_rating,
 )
 from core.budget import calculate_budget_allocation, BUDGET_SCENARIOS
+from core.marketing import match_bloggers, get_all_topics
 from utils.validators import parse_amount, normalize_industry, normalize_region
 
 
@@ -51,8 +56,23 @@ def ask_continue() -> str:
     return "exit"
 
 
+def choose_scenario() -> str:
+    """Главное меню симулятора."""
+    print_separator("ГЛАВНОЕ МЕНЮ")
+    print("1. 🏛 Подобрать госпрограмму поддержки")
+    print("2. 📢 Найти блогера для рекламы")
+    print("3. ❌ Выйти")
+
+    choice = input("\nВаш выбор (1/2/3): ").strip()
+    if choice == "1":
+        return "programs"
+    if choice == "2":
+        return "bloggers"
+    return "exit"
+
+
 # ─────────────────────────────────────────────────────────────
-# Сбор профиля
+# СБОР ПРОФИЛЯ ИП (сценарий госпрограмм)
 # ─────────────────────────────────────────────────────────────
 def collect_profile() -> dict | None:
     """
@@ -98,7 +118,7 @@ def collect_profile() -> dict | None:
 
 
 # ─────────────────────────────────────────────────────────────
-# Запуск одного сценария
+# СЦЕНАРИЙ ГОСПРОГРАММ
 # ─────────────────────────────────────────────────────────────
 def run_scenario(profile: dict) -> str:
     """
@@ -210,10 +230,136 @@ def run_scenario(profile: dict) -> str:
 
 
 # ─────────────────────────────────────────────────────────────
+# СБОР ЗАПРОСА НА БЛОГЕРОВ
+# ─────────────────────────────────────────────────────────────
+SKIP_WORDS = {"пропустить", "пропуск", "skip", "-", "нет", "не важно", ""}
+
+
+def collect_blogger_request() -> dict | None:
+    """
+    Собирает запрос на подбор блогеров через диалог.
+    Возвращает dict с параметрами или None при ошибке ввода.
+    """
+    bloggers = load_bloggers_from_json()
+    topics = get_all_topics(bloggers)
+
+    # ШАГ 1: Тема
+    print_separator("ШАГ 1 из 4: Тема")
+    for i, t in enumerate(topics, 1):
+        print(f"  {i}. {t}")
+    topic_raw = input("\nВыберите номер темы или напишите «любая»: ").strip().lower()
+
+    if topic_raw in SKIP_WORDS or topic_raw in ("любая", "все"):
+        selected_topics = None
+    elif topic_raw.isdigit():
+        idx = int(topic_raw) - 1
+        if 0 <= idx < len(topics):
+            selected_topics = [topics[idx]]
+        else:
+            print("❌ Такого номера нет. Берём все темы.")
+            selected_topics = None
+    else:
+        # Пробуем как текстовое название темы
+        matched = [t for t in topics if topic_raw in t.lower()]
+        if matched:
+            selected_topics = [matched[0]]
+        else:
+            print("❌ Тема не распознана. Берём все темы.")
+            selected_topics = None
+
+    print(f"✅ Темы: {selected_topics or 'все'}")
+
+    # ШАГ 2: Мин. подписчики
+    print_separator("ШАГ 2 из 4: Мин. подписчики")
+    min_raw = input("Минимум (или «Пропустить»): ").strip().lower()
+    if min_raw in SKIP_WORDS:
+        min_subs = None
+    else:
+        min_subs = parse_amount(min_raw)
+        if min_subs is None:
+            print("⚠️  Не распознано, оставляем без ограничения.")
+    print(f"✅ Мин. подписчиков: {min_subs if min_subs is not None else 'без ограничения'}")
+
+    # ШАГ 3: Макс. подписчики
+    print_separator("ШАГ 3 из 4: Макс. подписчики")
+    max_raw = input("Максимум (или «Пропустить»): ").strip().lower()
+    if max_raw in SKIP_WORDS:
+        max_subs = None
+    else:
+        max_subs = parse_amount(max_raw)
+        if max_subs is None:
+            print("⚠️  Не распознано, оставляем без ограничения.")
+    print(f"✅ Макс. подписчиков: {max_subs if max_subs is not None else 'без ограничения'}")
+
+    # ШАГ 4: Только с рекламой?
+    print_separator("ШАГ 4 из 4: Только с рекламой?")
+    ads_raw = input("Показывать только тех, кто уже размещает рекламу? (Да/Нет): ").strip().lower()
+    only_with_ads = ads_raw in ("да", "yes", "1", "y", "д")
+    print(f"✅ Только с рекламой: {'да' if only_with_ads else 'нет'}")
+
+    return {
+        "topics": selected_topics,
+        "min_subs": min_subs,
+        "max_subs": max_subs,
+        "only_with_ads": only_with_ads,
+    }
+
+
+# ─────────────────────────────────────────────────────────────
+# СЦЕНАРИЙ ПОДБОРА БЛОГЕРОВ
+# ─────────────────────────────────────────────────────────────
+def run_bloggers_scenario() -> None:
+    """Полный сценарий подбора блогеров для рекламы."""
+    req = collect_blogger_request()
+    if req is None:
+        return
+
+    print_separator("ПОДБОР БЛОГЕРОВ")
+
+    results = match_bloggers(
+        load_bloggers_from_json(),
+        topics=req["topics"],
+        min_subs=req["min_subs"],
+        max_subs=req["max_subs"],
+        only_with_ads=req["only_with_ads"],
+        limit=5,
+    )
+
+    if not results:
+        print("😔 По вашим параметрам ничего не найдено.")
+        print("Попробуйте расширить диапазон подписчиков или выбрать другую тему.")
+        return
+
+    print(f"🔍 Найдено блогеров: {len(results)}\n")
+
+    for i, b in enumerate(results, 1):
+        print(f"{i}. {b['name']}")
+        print(f"   🔗 {b['url']}")
+        print(f"   🏷 {', '.join(b['topics'])}")
+        print(f"   👥 {b['subscribers']:,} подписчиков")
+        print(f"   📝 {b['posts_total']:,} постов всего")
+        print(f"   👀 Ср. просмотры: {b['avg_views']:,}")
+        print(f"   ❤️ Ср. реакции: {b['avg_likes']:,}")
+        print(f"   📊 ER: {b['er']}% | Охват: {b['reach']}%")
+
+        has_ads = b.get("has_ads")
+        if has_ads is True:
+            ads_line = "📢 Реклама: да (замечена)"
+        elif has_ads is False:
+            ads_line = "🚫 Реклама: не замечена"
+        else:
+            ads_line = "❓ Реклама: неизвестно"
+        print(f"   {ads_line}")
+
+        print(f"   ⭐ Оценка: {b['score']}/100")
+        print()
+
+
+# ─────────────────────────────────────────────────────────────
 # Главный цикл
 # ─────────────────────────────────────────────────────────────
 def simulate():
-    """Главный цикл симулятора с возможностью продолжить."""
+    """Главный цикл симулятора с выбором сценария."""
     print("🔧 Инициализация базы данных...")
     init_db()
     load_programs_from_json()
@@ -226,21 +372,32 @@ def simulate():
     profile = None
 
     while True:
-        # ─── Если профиля нет — собираем заново ───
+        # ─── Если профиля нет — сначала выбор сценария ───
         if profile is None:
+            scenario = choose_scenario()
+
+            if scenario == "exit":
+                print("\n👋 До свидания!")
+                return
+
+            if scenario == "bloggers":
+                run_bloggers_scenario()
+                # После сценария блогеров возвращаемся в главное меню
+                continue
+
+            # scenario == "programs"
             profile = collect_profile()
             if profile is None:
                 print("❌ Не удалось собрать профиль.")
-                return
+                continue
 
-        # ─── Запускаем сценарий ───
+        # ─── Запускаем сценарий госпрограмм ───
         run_scenario(profile)
 
         # ─── Спрашиваем, что дальше ───
         action = ask_continue()
 
         if action == "retry":
-            # Меняем только часть параметров
             print_separator("ИЗМЕНЕНИЕ ПАРАМЕТРОВ")
 
             new_industry = input(
@@ -263,7 +420,7 @@ def simulate():
                 if parsed is not None:
                     profile["target_revenue"] = parsed
 
-            continue  # снова запускаем сценарий с обновлённым профилем
+            continue
 
         if action == "restart":
             profile = None
