@@ -1,32 +1,22 @@
+# bot/keyboards.py
+
 """
 Модуль клавиатур для бота CashBrain.
-
-Возвращает готовые AttachmentButton — их нужно передавать
-в message.answer(..., attachments=[...]).
 """
 
 from maxapi.types import CallbackButton
 from maxapi.utils.inline_keyboard import InlineKeyboardBuilder
 
 
-# ─────────────────────────────────────────────────────────────
-#  Главное меню
-# ─────────────────────────────────────────────────────────────
-
 def get_main_menu_keyboard():
-    """Кнопки главного меню: программы / блогеры."""
+    """Главное меню — только один сценарий."""
     builder = InlineKeyboardBuilder()
     builder.add(
-        CallbackButton(text="🏛 Госпрограммы", payload="menu:programs"),
-        CallbackButton(text="📢 Найти блогера", payload="menu:bloggers"),
+        CallbackButton(text="🏛 Подобрать госпрограмму", payload="menu:programs"),
     )
     builder.adjust(1)
     return builder.as_markup()
 
-
-# ─────────────────────────────────────────────────────────────
-#  Сценарий госпрограмм
-# ─────────────────────────────────────────────────────────────
 
 def get_programs_keyboard():
     """Действия после показа программ."""
@@ -39,45 +29,27 @@ def get_programs_keyboard():
 
 
 def get_budget_keyboard():
-    """Выбор сценария бюджета + переход к блогерам + возврат в меню."""
+    """Выбор сценария бюджета."""
     builder = InlineKeyboardBuilder()
     builder.add(
         CallbackButton(text="🟢 Осторожный", payload="budget:cautious"),
         CallbackButton(text="🟡 Сбалансированный", payload="budget:balanced"),
         CallbackButton(text="🔴 Агрессивный", payload="budget:aggressive"),
     )
-    builder.add(
-        CallbackButton(text="🏠 В главное меню", payload="menu:main"),
-    )
     builder.adjust(1)
     return builder.as_markup()
 
 
 def get_after_budget_keyboard():
-    """После выбора сценария: перейти к блогерам или в меню."""
+    """После выбора бюджета — автоматический переход к блогерам."""
     builder = InlineKeyboardBuilder()
     builder.add(
-        CallbackButton(text="📢 Найти блогеров", payload="bloggers:start"),
+        CallbackButton(text="📢 Подобрать блогеров", payload="bloggers:start"),
         CallbackButton(text="🏠 В главное меню", payload="menu:main"),
     )
     builder.adjust(1)
     return builder.as_markup()
 
-
-def get_final_keyboard():
-    """Финальный экран."""
-    builder = InlineKeyboardBuilder()
-    builder.add(
-        CallbackButton(text="🔄 Начать заново", payload="final:restart"),
-        CallbackButton(text="💾 Сохранить отчёт", payload="final:save"),
-    )
-    builder.adjust(2)
-    return builder.as_markup()
-
-
-# ─────────────────────────────────────────────────────────────
-#  Сценарий блогеров
-# ─────────────────────────────────────────────────────────────
 
 def get_bloggers_topics_keyboard(topics: list[str]):
     """Кнопки выбора темы блога."""
@@ -102,46 +74,21 @@ def get_bloggers_ads_keyboard():
     return builder.as_markup()
 
 
+def get_bloggers_skip_keyboard(step: str):
+    """Кнопка «Пропустить» для шагов 2 и 3."""
+    builder = InlineKeyboardBuilder()
+    builder.add(
+        CallbackButton(text="⏭ Пропустить", payload=f"bloggers:skip:{step}")
+    )
+    builder.adjust(1)
+    return builder.as_markup()
+
+
 def get_bloggers_restart_keyboard():
     """После выдачи результатов."""
     builder = InlineKeyboardBuilder()
     builder.add(
-        CallbackButton(text="🔄 Найти ещё блогеров", payload="bloggers:restart")
-    )
-    builder.adjust(1)
-    return builder.as_markup()
-
-def get_bloggers_skip_keyboard(step: str):
-    """
-    Кнопка «Пропустить» для шагов 2 и 3.
-
-    step: "min" или "max" — используется в payload.
-    """
-    builder = InlineKeyboardBuilder()
-    builder.add(
-        CallbackButton(
-            text="⏭ Пропустить",
-            payload=f"bloggers:skip:{step}",
-        )
-    )
-    builder.adjust(1)
-    return builder.as_markup()
-
-
-def get_bloggers_restart_keyboard():
-    """После выдачи результатов: найти ещё / в главное меню."""
-    builder = InlineKeyboardBuilder()
-    builder.add(
         CallbackButton(text="🔄 Найти ещё блогеров", payload="bloggers:restart"),
-        CallbackButton(text="🏠 В главное меню", payload="menu:main"),
-    )
-    builder.adjust(1)
-    return builder.as_markup()
-
-def get_back_to_menu_keyboard():
-    """Кнопка возврата в главное меню."""
-    builder = InlineKeyboardBuilder()
-    builder.add(
         CallbackButton(text="🏠 В главное меню", payload="menu:main"),
     )
     builder.adjust(1)
