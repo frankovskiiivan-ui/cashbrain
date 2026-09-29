@@ -7,27 +7,27 @@ Callback-хендлеры на кнопки:
 - budget:aggressive
 """
 
+# bot/handlers/budget.py
+
+"""
+Модуль распределения бюджета.
+
+После выбора сценария — автоматически переходит к подбору блогеров.
+"""
+
 import logging
 from maxapi import Dispatcher, F
 from maxapi.types import MessageCallback
 from maxapi.context import MemoryContext
 
 from bot.keyboards import get_after_budget_keyboard
-from core.budget import (
-    calculate_budget_allocation,
-    format_budget_report,
-)
-
+from core.budget import calculate_budget_allocation
 
 logger = logging.getLogger(__name__)
 
 
-# ─────────────────────────────────────────────────────────────
-#  Вспомогательная логика
-# ─────────────────────────────────────────────────────────────
-
 async def _apply_budget_choice(event: MessageCallback, context: MemoryContext, scenario_key: str):
-    """Общая логика для всех трёх кнопок бюджета."""
+    """Общая логика для трёх кнопок бюджета."""
     user_data = await context.get_data()
     total_funding = user_data.get("total_funding", 0)
 
@@ -41,7 +41,6 @@ async def _apply_budget_choice(event: MessageCallback, context: MemoryContext, s
 
     allocation = calculate_budget_allocation(total_funding, scenario_key)
 
-    # Сохраняем выбор — пригодится в модуле блогеров
     await context.update_data(
         budget_scenario=scenario_key,
         marketing_budget=allocation["marketing"],
@@ -56,8 +55,8 @@ async def _apply_budget_choice(event: MessageCallback, context: MemoryContext, s
         f"📢 Маркетинг: {allocation['marketing']:,.0f} ₽\n"
         f"🏠 Аренда: {allocation['rent']:,.0f} ₽\n"
         f"🛡 Резерв: {allocation['reserve']:,.0f} ₽\n\n"
-        f"Теперь можно найти блогеров для рекламы "
-        f"с бюджетом {allocation['marketing']:,.0f} ₽."
+        f"Теперь подберём блогеров под маркетинговый бюджет "
+        f"{allocation['marketing']:,.0f} ₽."
     )
 
     await event.message.answer(
@@ -65,10 +64,6 @@ async def _apply_budget_choice(event: MessageCallback, context: MemoryContext, s
         attachments=[get_after_budget_keyboard()],
     )
 
-
-# ─────────────────────────────────────────────────────────────
-#  Регистрация хендлеров
-# ─────────────────────────────────────────────────────────────
 
 def register_budget_handlers(dp: Dispatcher):
 
