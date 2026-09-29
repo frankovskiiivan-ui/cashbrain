@@ -1,9 +1,12 @@
+# bot/handlers/router.py
+
 """
 Единый роутер текстовых сообщений.
 
 maxapi вызывает только первый подходящий хендлер и останавливается.
 Поэтому вместо 8 конкурирующих хендлеров на F.message.body.text
-у нас один, который смотрит на текущий state и делегирует в нужную функцию.
+у нас один, который смотрит на текущий state и делегирует
+в нужную функцию.
 """
 
 import logging
@@ -24,7 +27,6 @@ from bot.handlers.bloggers import (
     handle_min_subs,
     handle_max_subs,
     handle_ads_text,
-    start_bloggers_flow,
 )
 
 logger = logging.getLogger(__name__)
@@ -35,7 +37,6 @@ def register_text_router(dp: Dispatcher):
     @dp.message_created(F.message.body.text)
     async def route_text(event: MessageCreated, context: MemoryContext):
         state = await context.get_state()
-        text = event.message.body.text.strip()
 
         # ─── Профиль ИП ───
         if state == ProfileForm.waiting_for_industry:
@@ -56,15 +57,5 @@ def register_text_router(dp: Dispatcher):
             await handle_max_subs(event, context)
         elif state == BloggersForm.waiting_for_ads_filter:
             await handle_ads_text(event, context)
-
-        # ─── Главное меню текстом (1/2) ───
-        elif text == "1":
-            await context.set_state(ProfileForm.waiting_for_industry)
-            await event.message.answer(
-                "Шаг 1 из 4: В какой сфере вы работаете?\n"
-                "Например: «кофейня», «IT-услуги», «производство»."
-            )
-        elif text == "2":
-            await start_bloggers_flow(event, context)
 
         # Иначе — игнорируем (пользователь нажимает кнопки)
