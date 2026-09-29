@@ -69,15 +69,26 @@ def format_budget_report(total_funding: float) -> str:
     """
     Формирует текст с тремя сценариями распределения бюджета.
     """
-    text = f"💰 **Распределение бюджета: {total_funding:,.0f} ₽**\n\n"
+    text = f"💰 Распределение бюджета: {total_funding:,.0f} ₽\n\n"
 
     for scenario_key in ["cautious", "balanced", "aggressive"]:
         s = calculate_budget_allocation(total_funding, scenario_key)
-        text += f"**{s['label']}** — _{s['description']}_\n"
+        text += f"{s['label']} — {s['description']}\n"
         text += f"   🏭 Оборудование: {s['equipment']:,.0f} ₽\n"
         text += f"   📢 Маркетинг: {s['marketing']:,.0f} ₽\n"
         text += f"   🏠 Аренда: {s['rent']:,.0f} ₽\n"
         text += f"   🛡 Резерв: {s['reserve']:,.0f} ₽\n\n"
 
     text += "Выберите сценарий с помощью кнопок ниже 👇"
+    return text
+
+def format_selected_budget(scenario_data: dict) -> str:
+    """Формирует текст для одного выбранного сценария."""
+    text = f"✅ Выбран сценарий: {scenario_data['label']}\n"
+    text += f"{scenario_data['description']}\n\n"
+    text += f"Общая сумма: {scenario_data['total']:,.0f} ₽\n\n"
+    text += f"🏭 Оборудование: {scenario_data['equipment']:,.0f} ₽\n"
+    text += f"📢 Маркетинг: {scenario_data['marketing']:,.0f} ₽\n"
+    text += f"🏠 Аренда: {scenario_data['rent']:,.0f} ₽\n"
+    text += f"🛡 Резерв: {scenario_data['reserve']:,.0f} ₽\n"
     return text

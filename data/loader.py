@@ -1,6 +1,9 @@
 import json
 from data.db import get_session
 from data.models import SupportProgram
+from pathlib import Path
+
+BLOGGERS_JSON = Path(__file__).parent / "sources" / "bloggers.json"
 
 
 def load_programs_from_json(filepath: str = "data/sources/programs.json"):
@@ -33,3 +36,12 @@ def load_programs_from_json(filepath: str = "data/sources/programs.json"):
         print(f"❌ Ошибка загрузки: {e}")
     finally:
         session.close()
+
+
+def load_bloggers_from_json() -> list[dict]:
+    """
+    Читает bloggers.json и возвращает список словарей.
+    Не пишет в БД — используется ботом и симулятором напрямую.
+    """
+    with open(BLOGGERS_JSON, encoding="utf-8") as f:
+        return json.load(f)

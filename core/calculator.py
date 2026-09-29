@@ -146,11 +146,11 @@ def format_scenarios_report(scenarios: dict) -> str:
     """
     Превращает результат calculate_all_scenarios в текст для отправки в MAX.
     """
-    text = "📊 **Прогноз дохода (3 сценария)**\n\n"
+    text = "📊 Прогноз дохода (3 сценария)\n\n"
 
     for key in ["optimistic", "realistic", "pessimistic"]:
         s = scenarios[key]
-        text += f"**{s['scenario_label']}**\n"
+        text += f"{s['scenario_label']}\n"
         text += f"   📈 Выручка: {s['forecast_revenue']:,.0f} ₽/мес\n"
         text += f"   ✅ Прибыль: {s['net_profit']:,.0f} ₽/мес\n"
         text += f"   🎯 ROI: {s['roi']}%\n"
@@ -168,9 +168,9 @@ def format_programs_rating(by_program: list) -> str:
     if len(by_program) <= 1:
         return ""
 
-    text = "**🏆 Рейтинг программ по ROI:**\n\n"
+    text = "🏆 Рейтинг программ по ROI:\n\n"
     for i, p in enumerate(by_program[:3], 1):
         text += f"{i}. {p['program_name']}\n"
-        text += f"   ROI: **{p['roi']}%** | Прибыль: {p['net_profit']:,.0f} ₽/мес\n"
+        text += f"   ROI: {p['roi']}% | Прибыль: {p['net_profit']:,.0f} ₽/мес\n"
 
     return text
