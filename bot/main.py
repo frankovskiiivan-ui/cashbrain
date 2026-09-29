@@ -1,3 +1,5 @@
+# bot/main.py
+
 """
 Точка входа бота CashBrain.
 
@@ -13,10 +15,10 @@ from maxapi.types import BotCommand
 from data.db import init_db
 from data.loader import load_programs_from_json
 from bot.handlers.start import register_start_handlers
-#from bot.handlers.profile import register_profile_handlers
 from bot.handlers.programs import register_programs_handlers
 from bot.handlers.budget import register_budget_handlers
 from bot.handlers.bloggers import register_bloggers_handlers
+from bot.handlers.router import register_text_router
 
 # Загружаем переменные окружения
 load_dotenv()
@@ -33,10 +35,9 @@ logger = logging.getLogger(__name__)
 bot = Bot()
 dp = Dispatcher()
 
-from bot.handlers.router import register_text_router
+# Регистрируем все обработчики
 register_start_handlers(dp)       # /start и callback'и меню
 register_text_router(dp)          # ← ЕДИНЫЙ роутер текстовых сообщений
-
 register_programs_handlers(dp)    # callback'и программ
 register_budget_handlers(dp)      # callback'и бюджета
 register_bloggers_handlers(dp)    # callback'и блогеров
@@ -54,12 +55,12 @@ async def main():
     load_programs_from_json()
     logger.info("✅ Программы загружены")
 
+    # 3. Устанавливаем команды бота
     await bot.set_commands(
         BotCommand(name="start", description="Запустить бота"),
     )
-    
 
-    # 3. Запускаем polling
+    # 4. Запускаем polling
     logger.info("🤖 Бот запущен и слушает сообщения")
     await dp.start_polling(bot)
 
