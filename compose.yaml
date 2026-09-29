@@ -1,0 +1,12 @@
+version: "3.9"
+
+services:
+  bot:
+    build: .
+    container_name: cashbrain_bot
+    env_file:
+      - .env
+    volumes:
+      - ./cashbrain.db:/app/cashbrain.db
+      - ./data/sources:/app/data/sources
+    restart: unless-stopped
