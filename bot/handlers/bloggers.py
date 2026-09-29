@@ -136,10 +136,20 @@ async def start_bloggers_flow(event, context: MemoryContext):
 # ─────────────────────────────────────────────────────────────
 
 async def _finish_and_show(message, context: MemoryContext, only_with_ads: bool):
+    """Подбирает блогеров и СРАЗУ пересчитывает доход с учётом PR."""
     user_data = await context.get_data()
     selected_topics = user_data.get("selected_topics")
     min_subs = user_data.get("min_subs")
     max_subs = user_data.get("max_subs")
+    marketing_budget = user_data.get("marketing_budget", 0)
+    programs = user_data.get("found_programs", [])
+
+    profile = {
+        "region": user_data.get("region"),
+        "industry": user_data.get("industry"),
+        "target_revenue": user_data.get("target_revenue", 0),
+        "initial_capital": user_data.get("capital", 0),
+    }
 
     await message.answer("🔎 Ищу блогеров...")
 
@@ -158,10 +168,19 @@ async def _finish_and_show(message, context: MemoryContext, only_with_ads: bool)
         await context.set_state(BloggersForm.finished)
         return
 
+    # Показываем блогеров
     await message.answer(
         format_bloggers_report(results),
         attachments=[get_bloggers_restart_keyboard()],
     )
+
+    # 👇 ФИНАЛЬНЫЙ РАСЧЁТ ДОХОДА С УЧЁТОМ PR
+    from core.calculator import calculate_all_scenarios, format_scenarios_report
+
+    await message.answer("📊 Пересчитываю доход с учётом PR...")
+    final_scenarios = calculate_all_scenarios(profile, programs, marketing_budget)
+    await message.answer(format_scenarios_report(final_scenarios))
+
     await context.set_state(BloggersForm.finished)
 
 
