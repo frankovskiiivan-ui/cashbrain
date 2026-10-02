@@ -1,3 +1,5 @@
+# bot/handlers/budget.py
+
 """
 Модуль распределения бюджета.
 
@@ -5,14 +7,7 @@ Callback-хендлеры на кнопки:
 - budget:cautious
 - budget:balanced
 - budget:aggressive
-"""
-
-# bot/handlers/budget.py
-
-"""
-Модуль распределения бюджета.
-
-После выбора сценария — автоматически переходит к подбору блогеров.
+- budget:details
 """
 
 import logging
@@ -20,12 +15,23 @@ from maxapi import Dispatcher, F
 from maxapi.types import MessageCallback
 from maxapi.context import MemoryContext
 
-from bot.keyboards import get_after_budget_keyboard
-from core.budget import calculate_budget_allocation
+from bot.keyboards import (
+    get_budget_keyboard,
+    get_after_budget_keyboard,
+    get_budget_details_keyboard,
+)
+from core.budget import (
+    calculate_budget_allocation,
+    format_budget_report,
+    format_expenses_details,
+)
 
 logger = logging.getLogger(__name__)
 
 
+# ─────────────────────────────────────────────────────────────
+# Вспомогательная логика
+# ─────────────────────────────────────────────────────────────
 async def _apply_budget_choice(event: MessageCallback, context: MemoryContext, scenario_key: str):
     """Общая логика для трёх кнопок бюджета."""
     user_data = await context.get_data()
@@ -35,12 +41,13 @@ async def _apply_budget_choice(event: MessageCallback, context: MemoryContext, s
         await event.message.answer(
             "⚠️ Не удалось определить сумму финансирования. "
             "Пройдите подбор программ заново.",
-            attachments=[get_after_budget_keyboard()],
+            attachments=[get_budget_keyboard()],
         )
         return
 
     allocation = calculate_budget_allocation(total_funding, scenario_key)
 
+    # Сохраняем выбор — пригодится в модуле блогеров
     await context.update_data(
         budget_scenario=scenario_key,
         marketing_budget=allocation["marketing"],
@@ -55,8 +62,7 @@ async def _apply_budget_choice(event: MessageCallback, context: MemoryContext, s
         f"📢 Маркетинг: {allocation['marketing']:,.0f} ₽\n"
         f"🏠 Аренда: {allocation['rent']:,.0f} ₽\n"
         f"🛡 Резерв: {allocation['reserve']:,.0f} ₽\n\n"
-        f"Теперь подберём блогеров под маркетинговый бюджет "
-        f"{allocation['marketing']:,.0f} ₽."
+        f"Хотите узнать, **на что именно** потратить эти деньги?"
     )
 
     await event.message.answer(
@@ -65,6 +71,38 @@ async def _apply_budget_choice(event: MessageCallback, context: MemoryContext, s
     )
 
 
+async def _show_expenses_details(event: MessageCallback, context: MemoryContext):
+    """Показывает детализацию расходов."""
+    user_data = await context.get_data()
+
+    industry = user_data.get("industry", "кофейня")
+    allocation = user_data.get("budget_allocation", {})
+    bloggers = user_data.get("found_bloggers", [])
+
+    if not allocation:
+        await event.message.answer(
+            "⚠️ Сначала выберите сценарий бюджета.",
+            attachments=[get_budget_keyboard()],
+        )
+        return
+
+    text = format_expenses_details(
+        industry=industry,
+        equipment_budget=allocation.get("equipment", 0),
+        rent_budget=allocation.get("rent", 0),
+        marketing_budget=allocation.get("marketing", 0),
+        bloggers=bloggers,
+    )
+
+    await event.message.answer(
+        text,
+        attachments=[get_budget_details_keyboard()],
+    )
+
+
+# ─────────────────────────────────────────────────────────────
+# Регистрация хендлеров
+# ─────────────────────────────────────────────────────────────
 def register_budget_handlers(dp: Dispatcher):
 
     @dp.message_callback(F.callback.payload == "budget:cautious")
@@ -81,3 +119,8 @@ def register_budget_handlers(dp: Dispatcher):
     async def on_aggressive(event: MessageCallback, context: MemoryContext):
         await event.answer()
         await _apply_budget_choice(event, context, "aggressive")
+
+    @dp.message_callback(F.callback.payload == "budget:details")
+    async def on_details(event: MessageCallback, context: MemoryContext):
+        await event.answer()
+        await _show_expenses_details(event, context)
