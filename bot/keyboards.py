@@ -1,5 +1,7 @@
 # bot/keyboards.py
 
+# bot/keyboards.py
+
 """
 Модуль клавиатур для бота CashBrain.
 """
@@ -41,7 +43,19 @@ def get_budget_keyboard():
 
 
 def get_after_budget_keyboard():
-    """После выбора бюджета — автоматический переход к блогерам."""
+    """После выбора бюджета — детали, блогеры или меню."""
+    builder = InlineKeyboardBuilder()
+    builder.add(
+        CallbackButton(text="📋 Показать детали расходов", payload="budget:details"),
+        CallbackButton(text="📢 Подобрать блогеров", payload="bloggers:start"),
+        CallbackButton(text="🏠 В главное меню", payload="menu:main"),
+    )
+    builder.adjust(1)
+    return builder.as_markup()
+
+
+def get_budget_details_keyboard():
+    """Кнопки после показа детализации расходов."""
     builder = InlineKeyboardBuilder()
     builder.add(
         CallbackButton(text="📢 Подобрать блогеров", payload="bloggers:start"),
