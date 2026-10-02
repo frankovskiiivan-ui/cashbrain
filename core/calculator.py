@@ -1,4 +1,21 @@
 
+# core/calculator.py
+
+"""
+Модуль расчёта дохода для ИП.
+
+Принимает на вход:
+- профиль ИП (target_revenue, initial_capital),
+- список выбранных программ поддержки,
+- бюджет на маркетинг (опционально),
+- сценарий расчёта.
+
+Возвращает прогноз выручки, расходов, чистой прибыли, ROI и срока окупаемости.
+
+⚠️ ВАЖНО: Все расчёты являются прогнозными.
+Используются упрощённые допущения, которые указаны в README.
+"""
+
 # ─────────────────────────────────────────────────────────────
 # Базовые допущения (используются во всех сценариях)
 # ─────────────────────────────────────────────────────────────
@@ -7,20 +24,24 @@ RENT_RATIO = 0.15            # Аренда — 15% от целевой выру
 SALARY_RATIO = 0.25          # Зарплаты — 25% от целевой выручки
 LOAN_PAYMENT_RATIO = 0.05    # 5% от суммы финансирования в месяц
 
+
 # ─────────────────────────────────────────────────────────────
 # Коэффициенты для трёх сценариев
 # ─────────────────────────────────────────────────────────────
 SCENARIO_COEFFICIENTS = {
     "optimistic": {
         "revenue_growth_multiplier": 4.0,   # 1 руб. рекламы = 4 руб. выручки
+        "base_growth_rate": 0.20,           # +20% к целевой выручке (органический рост)
         "label": "🟢 Оптимистичный",
     },
     "realistic": {
         "revenue_growth_multiplier": 3.0,   # 1 руб. рекламы = 3 руб. выручки
+        "base_growth_rate": 0.10,           # +10%
         "label": "🟡 Реалистичный",
     },
     "pessimistic": {
         "revenue_growth_multiplier": 2.0,   # 1 руб. рекламы = 2 руб. выручки
+        "base_growth_rate": 0.0,            # 0% (без роста)
         "label": "🔴 Пессимистичный",
     },
 }
@@ -57,14 +78,16 @@ def calculate_profit(
     # 2. Сумма привлечённого финансирования
     total_funding = sum(p.get("amount_max", 0) for p in programs)
 
-    # 3. Прогноз выручки (цель + прирост от маркетинга)
+    # 3. Прогноз выручки:
+    #    цель + базовый рост (органический) + прирост от маркетинга
+    base_growth = target_revenue * coeffs["base_growth_rate"]
     revenue_growth = marketing_budget * coeffs["revenue_growth_multiplier"]
-    forecast_revenue = target_revenue + revenue_growth
+    forecast_revenue = target_revenue + base_growth + revenue_growth
 
     # 4. Расходы
-    taxes = forecast_revenue * TAX_RATE          # УСН 6%
-    rent = target_revenue * RENT_RATIO           # Аренда — 15%
-    salaries = target_revenue * SALARY_RATIO     # Зарплаты — 25%
+    taxes = forecast_revenue * TAX_RATE          # УСН 6% от прогнозной выручки
+    rent = target_revenue * RENT_RATIO           # Аренда — 15% от целевой
+    salaries = target_revenue * SALARY_RATIO     # Зарплаты — 25% от целевой
     loan_payments = total_funding * LOAN_PAYMENT_RATIO  # 5% от финансирования
     marketing = marketing_budget
 
@@ -146,11 +169,11 @@ def format_scenarios_report(scenarios: dict) -> str:
     """
     Превращает результат calculate_all_scenarios в текст для отправки в MAX.
     """
-    text = "📊 Прогноз дохода (3 сценария)\n\n"
+    text = "📊 **Прогноз дохода (3 сценария)**\n\n"
 
     for key in ["optimistic", "realistic", "pessimistic"]:
         s = scenarios[key]
-        text += f"{s['scenario_label']}\n"
+        text += f"**{s['scenario_label']}**\n"
         text += f"   📈 Выручка: {s['forecast_revenue']:,.0f} ₽/мес\n"
         text += f"   ✅ Прибыль: {s['net_profit']:,.0f} ₽/мес\n"
         text += f"   🎯 ROI: {s['roi']}%\n"
@@ -168,9 +191,9 @@ def format_programs_rating(by_program: list) -> str:
     if len(by_program) <= 1:
         return ""
 
-    text = "🏆 Рейтинг программ по ROI:\n\n"
+    text = "**🏆 Рейтинг программ по ROI:**\n\n"
     for i, p in enumerate(by_program[:3], 1):
         text += f"{i}. {p['program_name']}\n"
-        text += f"   ROI: {p['roi']}% | Прибыль: {p['net_profit']:,.0f} ₽/мес\n"
+        text += f"   ROI: **{p['roi']}%** | Прибыль: {p['net_profit']:,.0f} ₽/мес\n"
 
     return text
