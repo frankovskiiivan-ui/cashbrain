@@ -1,6 +1,7 @@
+# bot/handlers/profile.py
+
 """
 Модуль сбора профиля ИП.
-
 Функции вызываются из bot/handlers/router.py — по state.
 """
 
@@ -10,7 +11,7 @@ from maxapi.context import MemoryContext
 
 from core.matcher import find_matching_programs
 from utils.validators import parse_amount, normalize_industry, normalize_region
-from bot.keyboards import get_programs_keyboard
+from bot.keyboards import get_programs_choice_keyboard
 
 logger = logging.getLogger(__name__)
 
@@ -28,7 +29,7 @@ async def handle_industry(event, context: MemoryContext):
     await context.update_data(industry=industry)
     await context.set_state(ProfileForm.waiting_for_region)
     await event.message.answer(
-        "Шаг 2 из 4: В каком регионе вы ведёте деятельность?\n"
+        "**Шаг 2 из 4:** В каком регионе вы ведёте деятельность?\n"
         "Например: «Нижегородская область», «Республика Татарстан»."
     )
 
@@ -38,7 +39,7 @@ async def handle_region(event, context: MemoryContext):
     await context.update_data(region=region)
     await context.set_state(ProfileForm.waiting_for_capital)
     await event.message.answer(
-        "Шаг 3 из 4: Какой у вас начальный капитал?\n"
+        "**Шаг 3 из 4:** Какой у вас начальный капитал?\n"
         "Напишите сумму в рублях, например: «500000»."
     )
 
@@ -46,12 +47,14 @@ async def handle_region(event, context: MemoryContext):
 async def handle_capital(event, context: MemoryContext):
     capital = parse_amount(event.message.body.text)
     if capital is None:
-        await event.message.answer("Пожалуйста, напишите только число, например: «500000».")
+        await event.message.answer(
+            "Пожалуйста, напишите только число, например: «500000»."
+        )
         return
     await context.update_data(capital=capital)
     await context.set_state(ProfileForm.waiting_for_target_revenue)
     await event.message.answer(
-        "Шаг 4 из 4: Какую ежемесячную выручку вы хотите получать?\n\n"
+        "**Шаг 4 из 4:** Какую ежемесячную выручку вы хотите получать?\n\n"
         "• Если вы уже работаете — укажите текущую.\n"
         "• Если только планируете — укажите цель.\n\n"
         "Напишите сумму в рублях, например: «150000»."
@@ -80,7 +83,9 @@ async def handle_target_revenue(event, context: MemoryContext):
         programs = find_matching_programs(profile)
     except Exception as e:
         logger.error(f"Ошибка подбора программ: {e}")
-        await event.message.answer("⚠️ Произошла ошибка при подборе. Попробуйте позже.")
+        await event.message.answer(
+            "⚠️ Произошла ошибка при подборе. Попробуйте позже."
+        )
         await context.set_state(ProfileForm.finished)
         return
 
@@ -97,8 +102,10 @@ async def handle_target_revenue(event, context: MemoryContext):
     from bot.handlers.programs import format_programs_list, ProgramsForm
 
     report = format_programs_list(programs, profile["region"])
+
+    # 👇 ИСПРАВЛЕНО: кнопки выбора программ
     await event.message.answer(
         report,
-        attachments=[get_programs_keyboard()],
+        attachments=[get_programs_choice_keyboard(programs)],
     )
     await context.set_state(ProgramsForm.waiting_for_program_selection)
