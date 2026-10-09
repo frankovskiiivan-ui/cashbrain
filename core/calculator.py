@@ -1,4 +1,3 @@
-
 # core/calculator.py
 
 """
@@ -7,22 +6,22 @@
 Принимает на вход:
 - профиль ИП (target_revenue, initial_capital),
 - список выбранных программ поддержки,
-- бюджет на маркетинг (опционально),
+- бюджет на маркетинг,
+- стоимость аренды в месяц (из core/rent.py),
 - сценарий расчёта.
 
 Возвращает прогноз выручки, расходов, чистой прибыли, ROI и срока окупаемости.
 
-⚠️ ВАЖНО: Все расчёты являются прогнозными.
-Используются упрощённые допущения, которые указаны в README.
+
 """
 
 # ─────────────────────────────────────────────────────────────
 # Базовые допущения (используются во всех сценариях)
 # ─────────────────────────────────────────────────────────────
 TAX_RATE = 0.06              # УСН 6% — самый распространённый режим для ИП
-RENT_RATIO = 0.15            # Аренда — 15% от целевой выручки
 SALARY_RATIO = 0.25          # Зарплаты — 25% от целевой выручки
 LOAN_PAYMENT_RATIO = 0.05    # 5% от суммы финансирования в месяц
+COST_RATIO = 0.70            # Себестоимость товара — 70% от прогнозной выручки
 
 
 # ─────────────────────────────────────────────────────────────
@@ -31,7 +30,7 @@ LOAN_PAYMENT_RATIO = 0.05    # 5% от суммы финансирования �
 SCENARIO_COEFFICIENTS = {
     "optimistic": {
         "revenue_growth_multiplier": 4.0,   # 1 руб. рекламы = 4 руб. выручки
-        "base_growth_rate": 0.20,           # +20% к целевой выручке (органический рост)
+        "base_growth_rate": 0.20,           # +20% к целевой выручке
         "label": "🟢 Оптимистичный",
     },
     "realistic": {
@@ -41,7 +40,7 @@ SCENARIO_COEFFICIENTS = {
     },
     "pessimistic": {
         "revenue_growth_multiplier": 2.0,   # 1 руб. рекламы = 2 руб. выручки
-        "base_growth_rate": 0.0,            # 0% (без роста)
+        "base_growth_rate": 0.0,            # 0%
         "label": "🔴 Пессимистичный",
     },
 }
@@ -54,6 +53,7 @@ def calculate_profit(
     profile: dict,
     programs: list,
     marketing_budget: float = 0,
+    rent_monthly: float = 0,
     scenario: str = "realistic",
 ) -> dict:
     """
@@ -67,12 +67,13 @@ def calculate_profit(
     :param programs: список выбранных программ
         [{"name": "...", "amount_max": 500000}, ...]
     :param marketing_budget: бюджет на маркетинг (из модуля блогеров)
+    :param rent_monthly: стоимость аренды в месяц (из core/rent.py)
     :param scenario: "optimistic" | "realistic" | "pessimistic"
     :return: словарь с расчётами
     """
     coeffs = SCENARIO_COEFFICIENTS.get(scenario, SCENARIO_COEFFICIENTS["realistic"])
 
-    # 1. Целевая выручка (то, что пользователь хочет получать)
+    # 1. Целевая выручка
     target_revenue = profile.get("target_revenue", 0)
 
     # 2. Сумма привлечённого финансирования
@@ -85,13 +86,21 @@ def calculate_profit(
     forecast_revenue = target_revenue + base_growth + revenue_growth
 
     # 4. Расходы
-    taxes = forecast_revenue * TAX_RATE          # УСН 6% от прогнозной выручки
-    rent = target_revenue * RENT_RATIO           # Аренда — 15% от целевой
-    salaries = target_revenue * SALARY_RATIO     # Зарплаты — 25% от целевой
+    taxes = forecast_revenue * TAX_RATE              # УСН 6%
+    cost_of_goods = forecast_revenue * COST_RATIO    # себестоимость товара
+    salaries = target_revenue * SALARY_RATIO         # зарплаты — 25% от цели
+    rent = rent_monthly                              # аренда из БД
     loan_payments = total_funding * LOAN_PAYMENT_RATIO  # 5% от финансирования
     marketing = marketing_budget
 
-    total_expenses = taxes + rent + salaries + loan_payments + marketing
+    total_expenses = (
+        taxes
+        + cost_of_goods
+        + salaries
+        + rent
+        + loan_payments
+        + marketing
+    )
 
     # 5. Чистая прибыль
     net_profit = forecast_revenue - total_expenses
@@ -112,6 +121,8 @@ def calculate_profit(
         "roi": round(roi, 2),
         "payback_months": round(payback_months, 1) if payback_months else None,
         "marketing_budget": round(marketing_budget, 2),
+        "rent": round(rent, 2),
+        "cost_of_goods": round(cost_of_goods, 2),
     }
 
 
@@ -122,14 +133,21 @@ def calculate_all_scenarios(
     profile: dict,
     programs: list,
     marketing_budget: float = 0,
+    rent_monthly: float = 0,
 ) -> dict:
     """
     Считает три сценария: оптимистичный, реалистичный, пессимистичный.
     """
     return {
-        "optimistic": calculate_profit(profile, programs, marketing_budget, "optimistic"),
-        "realistic": calculate_profit(profile, programs, marketing_budget, "realistic"),
-        "pessimistic": calculate_profit(profile, programs, marketing_budget, "pessimistic"),
+        "optimistic": calculate_profit(
+            profile, programs, marketing_budget, rent_monthly, "optimistic"
+        ),
+        "realistic": calculate_profit(
+            profile, programs, marketing_budget, rent_monthly, "realistic"
+        ),
+        "pessimistic": calculate_profit(
+            profile, programs, marketing_budget, rent_monthly, "pessimistic"
+        ),
     }
 
 
@@ -140,6 +158,7 @@ def calculate_by_program(
     profile: dict,
     programs: list,
     marketing_budget: float = 0,
+    rent_monthly: float = 0,
     scenario: str = "realistic",
 ) -> list:
     """
@@ -150,14 +169,14 @@ def calculate_by_program(
     for program in programs:
         result = calculate_profit(
             profile=profile,
-            programs=[program],  # 👈 только одна программа
+            programs=[program],
             marketing_budget=marketing_budget,
+            rent_monthly=rent_monthly,
             scenario=scenario,
         )
         result["program_name"] = program.get("name", "Без названия")
         results.append(result)
 
-    # Сортируем по ROI — самая выгодная программа сверху
     results.sort(key=lambda x: x["roi"], reverse=True)
     return results
 
@@ -167,7 +186,7 @@ def calculate_by_program(
 # ─────────────────────────────────────────────────────────────
 def format_scenarios_report(scenarios: dict) -> str:
     """
-    Превращает результат calculate_all_scenarios в текст для отправки в MAX.
+    Превращает результат calculate_all_scenarios в текст для MAX.
     """
     text = "📊 **Прогноз дохода (3 сценария)**\n\n"
 
@@ -175,7 +194,15 @@ def format_scenarios_report(scenarios: dict) -> str:
         s = scenarios[key]
         text += f"**{s['scenario_label']}**\n"
         text += f"   📈 Выручка: {s['forecast_revenue']:,.0f} ₽/мес\n"
-        text += f"   ✅ Прибыль: {s['net_profit']:,.0f} ₽/мес\n"
+        text += f"   🏭 Себестоимость: {s['cost_of_goods']:,.0f} ₽\n"
+        text += f"   🏠 Аренда: {s['rent']:,.0f} ₽\n"
+
+        if s["net_profit"] < 0:
+            text += f"   ⚠️ Прибыль: {s['net_profit']:,.0f} ₽/мес (убыток!)\n"
+            text += f"   💡 Увеличьте цель по выручке или сократите расходы\n"
+        else:
+            text += f"   ✅ Прибыль: {s['net_profit']:,.0f} ₽/мес\n"
+
         text += f"   🎯 ROI: {s['roi']}%\n"
         if s["payback_months"]:
             text += f"   ⏱ Окупаемость: {s['payback_months']} мес\n"
@@ -186,7 +213,7 @@ def format_scenarios_report(scenarios: dict) -> str:
 
 def format_programs_rating(by_program: list) -> str:
     """
-    Превращает результат calculate_by_program в текст для отправки в MAX.
+    Превращает результат calculate_by_program в текст для MAX.
     """
     if len(by_program) <= 1:
         return ""
